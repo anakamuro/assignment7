@@ -1,0 +1,12 @@
+ .w-100 {
+     display: flex;
+     flex-direction: row;
+ }
+ ul li {
+     list-style: none;;
+ }
+ .box{
+     background-color: gray;
+     width: 400px;
+     height: 300px;
+ }
