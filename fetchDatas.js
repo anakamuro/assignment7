@@ -44,9 +44,7 @@ function getContent(data) {
     let ingredientsList = [];
  // const ingredients = recipes.ingredients;
     for (var i = 0; i < recipes.length; i++){
-    for (var j = 0; j < ingredient.length; j++){
-    for (var k = 0; j < quantity.length; k++){
-    for (var x = 0; j < unit.length; x++){
+    //  for (var j = 0; j < ingredients.length; j++){
     //    const {ingredients} = recipes[i].ingredients
      //   console.log(ingredients)
     //const {appliance, description, id, ingredients} = recipes[i];
@@ -65,10 +63,11 @@ function getContent(data) {
            <h5 class="card-title">${recipes[i].name} <span class="watch"><i class="fa fa-clock-o"></i>&nbsp;10 min</span></h5>
            <div class="row">
            <div class="card-text text-left w-50 col-6">
-           <span>${recipes[i].ingredients.ingredient[j]}:  ${recipes[i].ingredients.quantity[k]} ${recipes[i].ingredients.unit[x]}</span><br/>
-           <span>${recipes[i].ingredients.ingredient[j]}:  ${recipes[i].ingredients.quantity[k]} ${recipes[i].ingredients.unit[x]} cuilleres</span><br/>
-           <span>${recipes[i].ingredients.ingredient[j]}:  ${recipes[i].ingredients.quantity[k]} ${recipes[i].ingredients.unit[x]}</span><br/>
-           <span>${recipes[i].ingredients.ingredient[j]}:  ${recipes[i].ingredients.quantity[k]} ${recipes[i].ingredients.unit[x]}</span><br/>
+               <span>${recipes[i].name}: ${recipes[i].ingredients} ${recipes[i].ingredients}</span><br/>
+               <span>${recipes[i].ingredients.ingredient}:  ${recipes[i].ingredients} ${recipes[i].ingredients}</span><br/>
+               <span>${recipes[i].ingredients}:  ${recipes[i].ingredients} ${recipes[i].ingredients} cuilleres</span><br/>
+               <span>${recipes[i].ingredients}:  ${recipes[i].ingredients} ${recipes[i].ingredients}</span><br/>
+               <span>${recipes[i].ingredients}:  ${recipes[i].ingredients} ${recipes[i].ingredients}</span><br/>
            </div>
              <div class="card-text2 text-left w-50 col-6">
                ${recipes[i].description}
@@ -86,10 +85,8 @@ function getContent(data) {
   
    
   //output.appendChild(divList).join('');
- }
+//  }
 }
-    }
-  }
   output.innerHTML = recipeList;
 }
   
