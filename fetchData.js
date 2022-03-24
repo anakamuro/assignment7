@@ -1,8 +1,13 @@
 const searchInput = document.querySelector(".search");
 
 searchInput.addEventListener("input", (e) => {
-  const value = e.target.value;
-  console.log(value);
+  const searchString = e.target.value;
+  const filteredRecipes = data.filter((recipes)=>{
+    return (
+      recipes.name.includes(searchString) || recipes.description.includes(searchString)
+    )
+  })
+  console.log(filteredRecipes)
 });
 /*
 async function getData() {
@@ -41,20 +46,24 @@ function getContent(data) {
   const recipes = data.recipes;
     console.log(recipes)
     let recipeList = []
-    let ingredientsList = [];
  // const ingredients = recipes.ingredients;
     for (var i = 0; i < recipes.length; i++){
-    for (var j = 0; j < ingredient.length; j++){
-    for (var k = 0; j < quantity.length; k++){
-    for (var x = 0; j < unit.length; x++){
+    
     //    const {ingredients} = recipes[i].ingredients
      //   console.log(ingredients)
     //const {appliance, description, id, ingredients} = recipes[i];
     //console.log(id, ingredients, description, appliance)
-   var output = document.querySelector('.content')
-   console.log(output);
+   var output = document.querySelector('.row');
+
+   let ingredient_list = []
+   for(var j = 0; j < (recipes[i].ingredients).length; j++){
+     {
+       ingredient_list.push(`<strong>${recipes[i].ingredients[j].ingredient}:</strong>
+       ${recipes[i].ingredients[j].quantity ? recipes[i].ingredients[j].quantity: ''} ${recipes[i].ingredients[j].unit ? recipes[i].ingredients[j].unit : ''} <br>`)
+     }
+   }
    recipeList.push(`<li>
-   <div class="col-12 col-lg-4">
+   <div class="col dot">
        <div class="card row mr-4 mb-4">
          <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg"
          preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image cap">
@@ -65,10 +74,8 @@ function getContent(data) {
            <h5 class="card-title">${recipes[i].name} <span class="watch"><i class="fa fa-clock-o"></i>&nbsp;10 min</span></h5>
            <div class="row">
            <div class="card-text text-left w-50 col-6">
-           <span>${recipes[i].ingredients.ingredient[j]}:  ${recipes[i].ingredients.quantity[k]} ${recipes[i].ingredients.unit[x]}</span><br/>
-           <span>${recipes[i].ingredients.ingredient[j]}:  ${recipes[i].ingredients.quantity[k]} ${recipes[i].ingredients.unit[x]} cuilleres</span><br/>
-           <span>${recipes[i].ingredients.ingredient[j]}:  ${recipes[i].ingredients.quantity[k]} ${recipes[i].ingredients.unit[x]}</span><br/>
-           <span>${recipes[i].ingredients.ingredient[j]}:  ${recipes[i].ingredients.quantity[k]} ${recipes[i].ingredients.unit[x]}</span><br/>
+           <span class="list">${ingredient_list}</span><br/>
+           
            </div>
              <div class="card-text2 text-left w-50 col-6">
                ${recipes[i].description}
@@ -87,9 +94,6 @@ function getContent(data) {
    
   //output.appendChild(divList).join('');
  }
-}
-    }
-  }
-  output.innerHTML = recipeList;
+  output.innerHTML = recipeList
 }
   

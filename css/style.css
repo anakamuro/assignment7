@@ -104,5 +104,27 @@
       left: 0px;
   }
   .row {
-    --bs-gutter-x: 0rem !important
-  }
+    --bs-gutter-x: 0rem !important;
+    display: flex;
+    flex-direction: row;
+}
+/*
+.content {
+    
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.dot {
+    display: inline-block;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}*/
+.list{
+    list-style-type: none;  
+}
+.container ul li {
+    width: 30%;
+    list-style: none;
+}
