@@ -1,14 +1,4 @@
-const searchInput = document.querySelector(".search");
 
-searchInput.addEventListener("input", (e) => {
-  const searchString = e.target.value;
-  const filteredRecipes = data.filter((recipes)=>{
-    return (
-      recipes.name.includes(searchString) || recipes.description.includes(searchString)
-    )
-  })
-  console.log(filteredRecipes)
-});
 /*
 async function getData() {
   return await (await fetch("https://akihikonakamura125.website/assignment7/recipes.json")).json();
@@ -97,3 +87,68 @@ function getContent(data) {
   output.innerHTML = recipeList
 }
   
+const searchInput = document.querySelector(".search");
+
+searchInput.addEventListener("input", (e) => {
+  e.preventDefault()
+  const searchQuery = e.target.value;
+     getContent(searchQuery)
+  })
+  
+  async function getContent(searchQuery){
+    const response = await fetch(`akihikonakamura125.website/assignment7/${searchQuery}`)
+    const responseData = await response.json()
+    console.log(responseData)
+  }
+
+  /*
+  const searchStates = async searchText => {
+    const data = await fetch('recipes.json')
+    const recipes = data.recipes;
+    console.log(recipes)
+  
+    let matches = recipes.filter(recipe =>{
+      const regex = new RegExp(`^${searchText}`, `gi`);
+      return recipe.name.match(regex) || recipe.id.match(regex)
+    })
+    console.log(matches)
+  }
+*/
+
+/*
+    function ingredientsContent(){
+          getContent()
+            .then((data) => {
+            const recipes = data.recipes;
+    console.log(recipes)
+ // const ingredients = recipes.ingredients;
+    for (var i = 0; i < recipes.length; i++){
+    
+    //    const {ingredients} = recipes[i].ingredients
+     //   console.log(ingredients)
+    //const {appliance, description, id, ingredients} = recipes[i];
+    //console.log(id, ingredients, description, appliance)
+   let ingredientContent = document.querySelector('.ingredient');
+    
+   let ingredientList = []
+   for(var j = 0; j < (recipes[i].ingredients).length; j++){
+     {
+       ingredientList.push(`<strong>${recipes[i].ingredients[j].ingredient}:</strong><br>`)
+     }
+   }
+  
+   ingredientContent.innerHTML = `<li>
+   <div class="col dot">
+       <div class="card row mr-4 mb-4">
+        ${ingredientList}
+       </div>
+     </div>
+   </li>`
+    }
+  }
+}
+  //output.appendChild(divList).join('');
+  ingredientsContent()
+*/
+            
+    
