@@ -26,14 +26,13 @@ fetch("recipes.json")
     return response.json();
   })
   .then(function (data) {
-    getContent(data);
+    getContent(data.recipes);
   })
   .catch(function (err) {
     console.log("err", err);
   });
 
-function getContent(data) {
-  const recipes = data.recipes;
+function getContent(recipes) {
     console.log(recipes)
     let recipeList = []
  // const ingredients = recipes.ingredients;
@@ -87,8 +86,8 @@ function getContent(data) {
   output.innerHTML = recipeList
 }
   
-const searchInput = document.querySelector(".search");
 
+/*
 searchInput.addEventListener("input", (e) => {
   e.preventDefault()
   const searchQuery = e.target.value;
@@ -100,29 +99,75 @@ searchInput.addEventListener("input", (e) => {
     const responseData = await response.json()
     console.log(responseData)
   }
-
-  /*
-  const searchStates = async searchText => {
-    const data = await fetch('recipes.json')
-    const recipes = data.recipes;
-    console.log(recipes)
-  
-    let matches = recipes.filter(recipe =>{
-      const regex = new RegExp(`^${searchText}`, `gi`);
-      return recipe.name.match(regex) || recipe.id.match(regex)
-    })
-    console.log(matches)
-  }
 */
+
+//const searchInput = document.querySelector(".search");
+  const searchStates = async searchText => {
+    const res = await fetch('recipes.json')
+    const data = await res.json();
+    //console.log(recipes)
+  
+    let matches = data.recipes.filter(recipe =>{
+      for (let i = 0; i < recipe.ingredients.length; i++) {
+        for (let j = 0; j < recipe.ingredients[i].ingredient.length; j++) {
+      const regex = new RegExp(`^${searchText}`, 'gi');
+      return recipe.name.match(regex) || recipe.description.match(regex) || recipe.ingredients[i].ingredient[j].match(regex)
+      }
+    }
+    });
+
+    if(searchText.length === 0){
+      matches = [];
+      matchList.innerHTML = ''
+    }
+    outputHtml(matches)
+  }
+
+  const outputHtml = matches => {
+    if(matches.length > 0) {
+     const html = matches.map(match => `
+       <div class="card card-body mb-1">
+     <h4>${match.name}
+       </h4>
+       
+       </div>
+     `
+     )
+     .join('')
+
+     document.getElementById('matchList').innerHTML = html
+    }
+  }
+
+  document.getElementById('search').addEventListener('input', (e)=>{
+    if((e.target.value).length >= 3){
+       searchStates(search.value)
+    }
+    if((e.target.value).length < 3){
+      matches = [];
+      matchList.innerHTML = '';
+   }
+  })
+
+ const filterRecipe = async searchText =>{
+ document.getElementById('matchList').innerHTML = '';
+
+  const res = fetch('recipes.json');
+  const recipes =  await res.json()
+
+  let matches = recipes.recipes.filter(recipe => {
+      return recipe.name == searchText
+  })
+  console.log(matches)
+  getContent(matches)
+ }
 
 /*
     function ingredientsContent(){
           getContent()
-            .then((data) => {
-            const recipes = data.recipes;
+            .then((recipes) => {
     console.log(recipes)
  // const ingredients = recipes.ingredients;
-    for (var i = 0; i < recipes.length; i++){
     
     //    const {ingredients} = recipes[i].ingredients
      //   console.log(ingredients)
@@ -131,11 +176,12 @@ searchInput.addEventListener("input", (e) => {
    let ingredientContent = document.querySelector('.ingredient');
     
    let ingredientList = []
+   for (var i = 0; i < recipes.length; i++){
    for(var j = 0; j < (recipes[i].ingredients).length; j++){
      {
        ingredientList.push(`<strong>${recipes[i].ingredients[j].ingredient}:</strong><br>`)
      }
-   }
+    }
   
    ingredientContent.innerHTML = `<li>
    <div class="col dot">
@@ -145,10 +191,11 @@ searchInput.addEventListener("input", (e) => {
      </div>
    </li>`
     }
-  }
-}
+            }
+          }
+*/
   //output.appendChild(divList).join('');
   ingredientsContent()
-*/
+
             
     
