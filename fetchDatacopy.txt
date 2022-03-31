@@ -27,7 +27,6 @@ fetch("recipes.json")
   })
   .then(function (data) {
     getContent(data.recipes);
-    ingredientsContent(data.recipes)
   })
   .catch(function (err) {
     console.log("err", err);
@@ -163,9 +162,9 @@ searchInput.addEventListener("input", (e) => {
   getContent(matches)
  }
 
-
-    function    ingredientsContent(recipes){
-          getContent(recipes)
+/*
+    function    ingredientsContent(){
+          getContent()
             .then((recipes) => {
     console.log(recipes)
  // const ingredients = recipes.ingredients;
@@ -183,14 +182,19 @@ searchInput.addEventListener("input", (e) => {
        ingredientList.push(`<strong>${recipes[i].ingredients[j].ingredient}:</strong><br>`)
     }
    
-   ingredientContent.innerHTML = ingredientList
-  
+   ingredientContent.innerHTML = `<li>
+   <div class="col dot">
+       <div class="card row mr-4 mb-4">
+        ${ingredientList}
+       </div>
+     </div>
+   </li>`
     }
-            })
+            }
           }
         
   //output.appendChild(divList).join('');
   ingredientsContent()
-
+*/
             
     
