@@ -132,3 +132,12 @@
 #recipeSearch {
    cursor: pointer;  
 }
+#grid {
+    display: flex;
+}
+#ingredients_search_dropdown {
+    border-radius: 0%;
+}
+#angle {
+    padding-left: -5%;
+}

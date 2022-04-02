@@ -18,15 +18,17 @@
   
     <div class="container">
       <div class="topnav">
-        <input id="search"class="validate" type="text" placeholder="&nbsp;&nbsp;&nbsp;&nbsp; Search an ingredient, device, utensil or a recipe">
-        <div id="matchList"></div>
+
+        <input id="search"class="validate" type="text" placeholder="Search an ingredient, device, utensil or a recipe">
+        <div id="recipeList"></div>
         <i class="fa fa-search" aria-hidden="true"></i>
        <div id="coco"><button type="button" id="co" class="btn btn-primary">Coco&nbsp;&nbsp; <i class="fa fa-times-circle-o" aria-hidden="true"></i></button></div><br/>
-        <button type="button" class="btn btn-primary btn2">Ingredients&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></button>
-        <div class="ingredient"></div>
-        <button type="button" class="device btn2">Device&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></button>
-        <button type="button" class="btn btn-danger btn2">Ustensils&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></button>
+       <div id="grid">
+        <Select type="button" id="ingredients_search_dropdown" class="btn btn-primary btn2"><i id="angle" class="fa fa-angle-down" aria-hidden="true"></i></Select>
+        <button type="button" class="device btn2">Device<i class="fa fa-angle-down" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-danger btn2">Ustensils<i class="fa fa-angle-down" aria-hidden="true"></i></button>
       </div>
+    </div>
          
           
        </div>
