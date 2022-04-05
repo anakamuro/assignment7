@@ -1,4 +1,6 @@
-var ingredientsList = `<option value="ingredients">Ingredients</option>`
+
+
+ var ingredientsList = `<option value="ingredients">Ingredients</option>`
  var deviceList = `<option value="ingredients">Device</option>`
  var ustensilsList = `<option value="ingredients">Utensils</option>`
 
@@ -146,28 +148,28 @@ const filterRecipe = async searchBox => {
 };
 
 
-let ingredrop = document.getElementById('select#ingredients_search_dropdown');
-let ingreinput = document.getElementById('input#ingredients_search_input.btn.btn-primary.btn2');                  
+//let ingredrop = document.getElementById('select#ingredients_search_dropdown');
+let ingreinput = document.getElementById('ingredients_search_input');                  
 
- ingredrop.addEventListener('click', function(){
-  document.getElementById('select#ingredients_search_dropdown').style.display = "none"
-  document.getElementById('input#ingredients_search_input.btn.btn-primary.btn2').style.display = "block"
+ingredients_search_dropdown.addEventListener('click', function(){
+  document.getElementById('ingredients_search_dropdown').style.display = "none"
+  document.getElementById('ingredients_search_input').style.display = "block"
  })
 
- let devicedrop = document.getElementById('select#device_search_dropdown');
-let deviceinput = document.getElementById('input#device_search_input.btn.btn-primary.btn2');                  
+ //let devicedrop = document.getElementById('device_search_dropdown');
+let deviceinput = document.getElementById('device_search_input');                  
 
- devicedrop.addEventListener('click', function(){
-  document.getElementById('select#device_search_dropdown').style.display = "none"
-  document.getElementById('input#device_search_input.btn.btn-primary.btn2').style.display = "block"
+device_search_dropdown.addEventListener('click', function(){
+  document.getElementById('device_search_dropdown').style.display = "none"
+  document.getElementById('device_search_input').style.display = "block"
  })
 
- let usteDrop = document.getElementById('select#ustensils_search_dropdown');
-let usteInput = document.getElementById('input#ustensils_search_input.btn.btn-primary.btn2');                  
+ //let usteDrop = document.getElementById('ustensils_search_dropdown');
+let usteInput = document.getElementById('ustensils_search_input');                  
 
- usteDrop.addEventListener('click', function(){
-  document.getElementById('select#ustensils_search_dropdown').style.display = "none"
-  document.getElementById('input#ustensils_search_input.btn.btn-primary.btn2').style.display = "block"
+ustensils_search_dropdown.addEventListener('click', function(){
+  document.getElementById('ustensils_search_dropdown').style.display = "none"
+  document.getElementById('ustensils_search_input').style.display = "block"
  })
 
 
