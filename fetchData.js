@@ -1,7 +1,10 @@
-
- var ingredientsList = `<option value="ingredients">Ingredients</option>`
+var ingredientsList = `<option value="ingredients">Ingredients</option>`
+ var deviceList = `<option value="ingredients">Device</option>`
+ var ustensilsList = `<option value="ingredients">Utensils</option>`
 
  ingredients_search_dropdown = document.getElementById("ingredients_search_dropdown")
+ device_search_dropdown = document.getElementById("device_search_dropdown")
+ ustensils_search_dropdown = document.getElementById("ustensils_search_dropdown")
 
 fetch("recipes.json")
   .then(function (response) {
@@ -12,10 +15,14 @@ fetch("recipes.json")
     for (var i = 0; i < recipes.length; i++) {
       for (var j = 0; j < recipes[i].ingredients.length; j++){
         ingredientsList = ingredientsList +(`<option value="${recipes[i].ingredients[j].ingredient}'>${recipes[i].ingredients[j].ingredient}</option>`)
+        deviceList = deviceList +(`<option value="${recipes[i].appliance}'>${recipes[i].appliance}</option>`)
+        ustensilsList = ustensilsList +(`<option value="${recipes[i].ustensils}'>${recipes[i].ustensils}</option>`)
       }
     }
-    console.log(ingredientsList)
-    ingredients_search_dropdown.innerHTML = (ingredientsList)
+    console.log(deviceList)
+    ingredients_search_dropdown.innerHTML = '<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">' + (ingredientsList)
+    device_search_dropdown.innerHTML = (deviceList)
+    ustensils_search_dropdown.innerHTML = (ustensilsList)
     getContent(data.recipes)
   })
   .catch(function (err) {
@@ -138,3 +145,50 @@ const filterRecipe = async searchBox => {
   getContent(fits);
 };
 
+
+let ingredrop = document.getElementById('select#ingredients_search_dropdown');
+let ingreinput = document.getElementById('input#ingredients_search_input.btn.btn-primary.btn2');                  
+
+ ingredrop.addEventListener('click', function(){
+  document.getElementById('select#ingredients_search_dropdown').style.display = "none"
+  document.getElementById('input#ingredients_search_input.btn.btn-primary.btn2').style.display = "block"
+ })
+
+ let devicedrop = document.getElementById('select#device_search_dropdown');
+let deviceinput = document.getElementById('input#device_search_input.btn.btn-primary.btn2');                  
+
+ devicedrop.addEventListener('click', function(){
+  document.getElementById('select#device_search_dropdown').style.display = "none"
+  document.getElementById('input#device_search_input.btn.btn-primary.btn2').style.display = "block"
+ })
+
+ let usteDrop = document.getElementById('select#ustensils_search_dropdown');
+let usteInput = document.getElementById('input#ustensils_search_input.btn.btn-primary.btn2');                  
+
+ usteDrop.addEventListener('click', function(){
+  document.getElementById('select#ustensils_search_dropdown').style.display = "none"
+  document.getElementById('input#ustensils_search_input.btn.btn-primary.btn2').style.display = "block"
+ })
+
+
+ /*
+ var search = function(nums, target){
+   let left = 0;
+   let right = nums.length - 1
+   return bst(left, right, nums, target)
+ }
+
+ const bst = (left, right, nums, target)=> {
+   const mid = (left + Math.floor((right - left)/2))
+   if(left < right){
+     if (nums[mid] === target){
+       return mid
+     } else if (nums [mid] < target){
+       return bst (mid + 1, right, nums, target)
+     } else {
+       return bst(left, mid-1, nums, target)
+     }
+   }
+   return -1;
+ }
+ */

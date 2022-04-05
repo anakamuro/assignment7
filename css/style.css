@@ -57,6 +57,7 @@
      height: 60px;
      border: none;
      margin-right: 2%;
+     color: white;
  }
  .fa-angle-down {
      font-size: 30px;
@@ -137,7 +138,65 @@
 }
 #ingredients_search_dropdown {
     border-radius: 0%;
+    color: white;
+    background-color: #0d6efd;
 }
+
 #angle {
     padding-left: -5%;
 }
+.drop {
+    width: 500px;
+    height: 500px;
+}
+
+input#ingredients_search_dropdown.btn.btn-primary.btn2::placeholder {
+    color: white;
+}
+input#ingredients_search_dropdown.btn.btn-primary.btn2{
+    background-color: #0d6efd;
+}
+/*
+Select#ingredients_search_dropdown.btn.btn-primary.btn2, Select#device_search_dropdown.btn.btn-primary.btn2,
+Select#ustensils_search_dropdown.btn.btn-primary.btn2 {
+    position: relative;
+}
+*/
+
+input#device_search_dropdown.btn.btn-primary.btn2 {
+    background-color: #6AD6A5;
+}
+input#ustensils_search_dropdown.btn.btn-primary.btn2 {
+    background-color: #dc3545;
+}
+input#ingredients_search_input {
+    position: relative;
+    top: 0px;
+    left: -164px;
+    display: none;
+}
+input#ingredients_search_input::placeholder{
+ color: white;
+}
+input#device_search_input::placeholder{
+    color: white;
+   }
+   input#ustensils_search_input::placeholder{
+    color: white;
+   }
+input#device_search_input {
+    position: relative;
+    top: 2px;
+    left: -175px;
+    display: none;
+    background-color: #6AD6A5;
+}
+input#ustensils_search_input {
+    position: relative;
+    top: 0px;
+    left: -182px;
+    display: none;
+    background-color: #bb2d3b;
+}
+
+
