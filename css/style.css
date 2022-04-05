@@ -1,4 +1,4 @@
- * {
+* {
     box-sizing: border-box;
  }
  .w-100 {
@@ -200,3 +200,7 @@ input#ustensils_search_input {
 }
 
 
+#ingreditentSearch {
+    background-color: #0d6efd;
+    color: #E7E7E7;
+}

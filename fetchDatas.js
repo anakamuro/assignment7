@@ -98,6 +98,7 @@ const searchRecipe = async searchBox => {
     fits = [];
     recipeList.innerHTML = "";
   }
+
   outputHtml(fits);
 };
 
@@ -148,43 +149,58 @@ const filterRecipe = async searchBox => {
 
 
 //let ingredrop = document.getElementById('select#ingredients_search_dropdown');
-let ingreinput = document.getElementById('ingredients_search_input');
+let ingreinput = document.getElementById('ingredients_search_input');                  
 let ingredientsForm = document.getElementById('ingredientsForm');                  
 
 ingredients_search_dropdown.addEventListener('click', function(){
   document.getElementById('ingredients_search_dropdown').style.display = "none"
   document.getElementById('ingredients_search_input').style.display = "block"
  })
-
+ 
  ingredientsForm.addEventListener("submit", function(e){
    e.preventDefault()
+   
 
-   searchIngredients(ingreinput.value)
-   ingreinput.innerHTML = " "
+  searchIngredients(ingreinput.value)
+  ingreinput.innerHTML =" "
  })
-
-  function searchIngredients(value){
-    ingredientsList = []
-     fetch("recipes.json")
-     .then(function(response){
-        return response.json();
-     })
-     .then(function(data){
-       recipes = data.recipes
-       for(var i = 0; i < recipes.length; i++){
-         for(var j = 0; j < reipes[i].ingredients.length; j++){
-           ingredientsList.push(recipes[i].ingredients[j].ingredient)
-         }
-        }
-        console.log(ingredientList)
-
-        if(compactBS(ingredientsList, value)){
-          if(ingredientsList.includes(value)){
-            outputHtmlContent([value])
+ function searchIngredients(value){
+  ingredientsList = []
+  // **********************************************
+      fetch("recipes.json")
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          
+        
+          recipes = data.recipes
+          for (var i = 0; i < recipes.length; i++) {
+            for (var j = 0; j < recipes[i].ingredients.length; j++){
+              ingredientsList.push(recipes[i].ingredients[j].ingredient)
+              // ingredientsListObject = JSON.stringify(ingredientsList)
+              // binary algorithm
+            } 
           }
-        }
-     })
+  // **************************************************
+  console.log(ingredientsList)
+
+
+  
+  if (compactBS(ingredientsList, value)){
+    if(ingredientsList.includes(value)){
+    outputHtmlContent([value])
+    
   }
+  }
+   
+
+    
+  })
+}
+ 
+
+
  //let devicedrop = document.getElementById('device_search_dropdown');
 let deviceinput = document.getElementById('device_search_input');                  
 
@@ -201,78 +217,60 @@ ustensils_search_dropdown.addEventListener('click', function(){
   document.getElementById('ustensils_search_input').style.display = "block"
  })
 
-  const outputHtmlContent = fits => {
-    if(fits.length > 0){
-      const html = fits
+
+
+ const outputHtmlContent = fits => {
+  if (fits.length > 0) {
+    const html = fits
       .map(
         (fit) => `
-          <div id="ingredientSearch class="col s12">
-
-        <h4 id="ingredientSearch" class="card title m1">${fits}</h4>
-        </div>
-        `
-      )
+    
+       <div id="ingreditentSearch" class="col s12">
+   
+     <h4 id="ingreditentSearc" class="card-title m1" >${fit}</h4>
+       </div>
+       `
+       )
       .join('');
 
-      document.getElementById("ingredientaList").innerHTML = html
-    }
+    document.getElementById("ingredientsList").innerHTML = html;
   }
+};
 
-  function compactBS(array, searchedValue, ARG_start, ARG_len){
-     // `void 0` is shorthand for `undefined`
-    var start = ARG_start === void 0 ? 0 : ARG_start |0;
-    var len = (ARG_len === void 0 ? (array.length|0) - start : ARG_len) | 0;
-    len = len - 1 | 0;
-    for (let i=0X80000000; i; i >>>=1 ){
-      if(len & i){
-        const noCBit = len & ~(i-1);
-         // noCBits now contains all the bits in len that are
+ 
+
+
+
+
+// Iterative function to implement Binary Search
+
+
+function compactBS(array, searchedValue, ARG_start, ARG_len){
+  // `void 0` is shorthand for `undefined`
+  var start = ARG_start === void 0 ? 0 : ARG_start |0;
+  var len = (ARG_len === void 0 ? (array.length|0) - start : ARG_len) |0;
+  len = len - 1 | 0;
+  for (let i=0x80000000; i; i >>>= 1) {
+    if (len & i) {
+      const noCBit = len & ~(i-1);
+      // noCBits now contains all the bits in len that are
       // greater than the present value of i.
-        len ^= (
-          (len ^ (noCBit-1)) &
-          ((array[start+noCBit] <= searchedValue |0) -1 >>>0)
-        ); // works based on the logic that `(x^y)^x === y` is always true
-      }
+      len ^= (
+        (len ^ (noCBit-1)) & 
+        ((array[start+noCBit] <= searchedValue |0) - 1 >>>0)
+      ); // works based on the logic that `(x^y)^x === y` is always true
     }
-     if (array[start+len] !== searchedValue){
-        // remove this if-statement to return the next closest
-        // element going downwards from the searched-for value
-        // OR 0 if the value is less than all values in the
-        // array. https://stackoverflow.com/a/44981570/5601591
-        return -1 - start - len |0;
-     }
-     return start + len|0;
   }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-  /*
- var search = function(nums, target){
-   let left = 0;
-   let right = nums.length - 1
-   return bst(left, right, nums, target)
- }
+  if (array[start+len] !== searchedValue) {
+    // remove this if-statement to return the next closest
+    // element going downwards from the searched-for value
+    // OR 0 if the value is less than all values in the
+    // array. https://stackoverflow.com/a/44981570/5601591
+    return -1 - start - len |0;
+  }
+  return start + len |0;
+}
 
- const bst = (left, right, nums, target)=> {
-   const mid = (left + Math.floor((right - left)/2))
-   if(left < right){
-     if (nums[mid] === target){
-       return mid
-     } else if (nums [mid] < target){
-       return bst (mid + 1, right, nums, target)
-     } else {
-       return bst(left, mid-1, nums, target)
-     }
-   }
-   return -1;
- }
- */
+
+
+
