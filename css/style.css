@@ -145,6 +145,27 @@
 #angle {
     padding-left: -5%;
 }
+.fa-angle-up.ingre {
+    position: relative;
+    color: white;
+    top: 0px;
+    left: 0px;
+    display: none;
+}
+.fa-angle-up.device {
+    position: relative;
+    color: white;
+    top: 0px;
+    left: 0px;
+    display: none;
+}
+.fa-angle-up.uste {
+    position: relative;
+    color: white;
+    top: 0px;
+    left: 0px;
+    display: none;
+}
 .drop {
     width: 500px;
     height: 500px;
@@ -172,7 +193,8 @@ Select#ustensils_search_dropdown.btn.btn-primary.btn2 {
 input#ingredients_search_input {
     position: relative;
     top: 0px;
-    left: 0px;
+    width: 300px;
+    left: -200px;
     display: none;
 }
 input#ingredients_search_input::placeholder{
@@ -187,15 +209,16 @@ input#device_search_input::placeholder{
 input#device_search_input {
     position: relative;
     top: 2px;
-    left: 0px;
+    left: -200px;
     background-color: #6AD6A5;
     display: none;
 }
 input#ustensils_search_input {
     position: relative;
     top: 0px;
-    left: 0px;
+    left: -200px;
     display: none;
+    width: 200px;
     background-color: #bb2d3b;
 }
 

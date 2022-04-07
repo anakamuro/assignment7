@@ -147,14 +147,30 @@ const filterRecipe = async searchBox => {
 };
 
 
-//let ingredrop = document.getElementById('select#ingredients_search_dropdown');
-let ingreinput = document.getElementById('ingredients_search_input');
-let ingredientsForm = document.getElementById('ingredientsForm');                  
 
-ingredients_search_dropdown.addEventListener('click', function(){
-  document.getElementById('ingredients_search_dropdown').style.display = "none"
-  document.getElementById('ingredients_search_input').style.display = "block"
- })
+
+ const binary = (searchedValue, array) => {
+  let lower = 0;
+  let upper = arr.length -1
+
+  while(lower <= upper){
+    console.log("try")
+const middle = lower + Math.floor((upper - lower)/ 2);
+
+if(val === arr[middle]){
+  return middle
+}
+if(val < arr[middle]){
+  upper = middle - 1
+} else {
+  lower = middle + 1
+}
+  }
+  return -1;
+ }
+// console.log(binary('Brown Sugar', 'searchedValue'))
+
+
 
  ingredientsForm.addEventListener("submit", function(e){
    e.preventDefault()
@@ -178,29 +194,14 @@ ingredients_search_dropdown.addEventListener('click', function(){
         }
         console.log(ingredientList)
 
-        if(compactBS(ingredientsList, value)){
+        if(binary(ingredientsList, value)){
           if(ingredientsList.includes(value)){
             outputHtmlContent([value])
           }
         }
      })
   }
- //let devicedrop = document.getElementById('device_search_dropdown');
-let deviceinput = document.getElementById('device_search_input');                  
-
-device_search_dropdown.addEventListener('click', function(){
-  document.getElementById('device_search_dropdown').style.display = "none"
-  document.getElementById('device_search_input').style.display = "block"
- })
-
- //let usteDrop = document.getElementById('ustensils_search_dropdown');
-let usteInput = document.getElementById('ustensils_search_input');                  
-
-ustensils_search_dropdown.addEventListener('click', function(){
-  document.getElementById('ustensils_search_dropdown').style.display = "none"
-  document.getElementById('ustensils_search_input').style.display = "block"
- })
-
+ 
   const outputHtmlContent = fits => {
     if(fits.length > 0){
       const html = fits
@@ -218,7 +219,7 @@ ustensils_search_dropdown.addEventListener('click', function(){
     }
   }
 
-  function compactBS(array, searchedValue, ARG_start, ARG_len){
+ /* function compactBS(array, searchedValue, ARG_start, ARG_len){
      // `void 0` is shorthand for `undefined`
     var start = ARG_start === void 0 ? 0 : ARG_start |0;
     var len = (ARG_len === void 0 ? (array.length|0) - start : ARG_len) | 0;
@@ -243,8 +244,7 @@ ustensils_search_dropdown.addEventListener('click', function(){
      }
      return start + len|0;
   }
- 
- 
+  */
  
  
  
