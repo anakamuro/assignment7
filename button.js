@@ -11,16 +11,17 @@ ingredrop.addEventListener('click', function(){
 
  ingreinput.addEventListener('click', function(){
     document.getElementById('ingredients_search_dropdown').style.zindex = "1"
+    document.getElementById('ingredients_search_dropdown').style.width = "200px"
     document.getElementById('ingredients_search_input').stytle.color = "transparent"
     document.getElementById('ingredients_search_input').style.display = none
    })
 let devicedrop = document.getElementById('device_search_dropdown');
 let deviceinput = document.getElementById('device_search_input');                  
 
-device_search_dropdown.addEventListener('click', function(){
+devicedrop.addEventListener('click', function(){
   document.getElementById('device_search_input').style.display = "block"
   document.getElementById('device_search_dropdown').style.zindex = "-1"
-  document.getElementById('device_search_dropdown').style.width = "200px"
+  document.getElementById('device_search_dropdown').style.width = "160px"
   document.getElementById('device_search_input').style.zindex = "1"
  })
 
