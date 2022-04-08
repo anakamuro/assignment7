@@ -1,29 +1,41 @@
- var ingredientsList = `<option value="ingredients">Ingredients</option>`
- var deviceList = `<option value="device">Device</option>`
- var ustensilsList = `<option value="ustensils">Utensils</option>`
+var ingredientsList = `<option value="ingredients">Ingredients</option>`;
+var deviceList = `<option value="ingredients">Device</option>`;
+var ustensilsList = `<option value="ingredients">Utensils</option>`;
 
- ingredients_search_dropdown = document.getElementById("ingredients_search_dropdown")
- device_search_dropdown = document.getElementById("device_search_dropdown")
- ustensils_search_dropdown = document.getElementById("ustensils_search_dropdown")
+ingredients_search_dropdown = document.getElementById(
+  "ingredients_search_dropdown"
+);
+device_search_dropdown = document.getElementById("device_search_dropdown");
+ustensils_search_dropdown = document.getElementById(
+  "ustensils_search_dropdown"
+);
 
 fetch("recipes.json")
   .then(function (response) {
     return response.json();
   })
   .then(function (data) {
-    recipes = data.recipes
+    recipes = data.recipes;
     for (var i = 0; i < recipes.length; i++) {
-      for (var j = 0; j < recipes[i].ingredients.length; j++){
-        ingredientsList = ingredientsList + `<option value="${recipes[i].ingredients[j].ingredient}'>${recipes[i].ingredients[j].ingredient}</option>`;
-        deviceList = deviceList + `<option value="${recipes[i].appliance}'>${recipes[i].appliance}</option>`
-        ustensilsList = ustensilsList + `<option value="${recipes[i].ustensils}'>${recipes[i].ustensils}</option>`
+      for (var j = 0; j < recipes[i].ingredients.length; j++) {
+        ingredientsList =
+          ingredientsList +
+          `<option value="${recipes[i].ingredients[j].ingredient}'>${recipes[i].ingredients[j].ingredient}</option>`;
+        deviceList =
+          deviceList +
+          `<option value="${recipes[i].appliance}'>${recipes[i].appliance}</option>`;
+        ustensilsList =
+          ustensilsList +
+          `<option value="${recipes[i].ustensils}'>${recipes[i].ustensils}</option>`;
       }
     }
-    console.log(deviceList)
-    ingredients_search_dropdown.innerHTML = '<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">' + ingredientsList
+    console.log(deviceList);
+    ingredients_search_dropdown.innerHTML =
+      '<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">' +
+      ingredientsList;
     device_search_dropdown.innerHTML = deviceList;
     ustensils_search_dropdown.innerHTML = ustensilsList;
-    getContent(data.recipes)
+    getContent(data.recipes);
   })
   .catch(function (err) {
     console.log("err", err);
@@ -73,10 +85,9 @@ function getContent(recipes) {
        </div>
      </div>
    </li>`);
- }
+  }
   output.innerHTML = recipeList;
 }
-
 
 const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
@@ -85,23 +96,23 @@ const searchRecipe = async (searchBox) => {
 
   let fits = data.recipes.filter((recipe) => {
     console.log("try")
-        const regex = new RegExp(`^${searchBox}`, "gi");
-        return (
-        recipe.name.match(regex) || 
-        recipe.description.match(regex) || 
-        recipe.ingredients[0].ingredient.match(regex)  || 
-        recipe.ingredients[1].ingredient.match(regex) || 
-        (recipe.ingredients[2] 
-            ? recipe.ingredients[2].ingredient.match(regex)
-             :null) ||
-        (recipe.ingredients[3] 
-            ? recipe.ingredients[3].ingredient.match(regex) 
-             :null) || 
-          (recipe.ingredients[4] 
-            ? recipe.ingredients[4].ingredient.match(regex) 
-            :null) 
-        )    
-      });
+    const regex = new RegExp(`^${searchBox}`, "gi");
+    return (
+      recipe.name.match(regex) ||
+      recipe.description.match(regex) ||
+      recipe.ingredients[0].ingredient.match(regex) ||
+      recipe.ingredients[1].ingredient.match(regex) ||
+      (recipe.ingredients[2]
+        ? recipe.ingredients[2].ingredient.match(regex)
+        : null) ||
+      (recipe.ingredients[3]
+        ? recipe.ingredients[3].ingredient.match(regex)
+        : null) ||
+      (recipe.ingredients[4]
+        ? recipe.ingredients[4].ingredient.match(regex)
+        : null)
+    );
+  });
 
   if (searchBox.length === 0) {
     fits = [];
@@ -126,14 +137,14 @@ const outputHtml = (fits) => {
        </div>
        </div>
        `
-       )
-      .join('');
+      )
+      .join("");
 
     document.getElementById("recipeList").innerHTML = html;
   }
 };
 
-document.getElementById('search').addEventListener("input", (e) => {
+document.getElementById("search").addEventListener("input", (e) => {
   if (e.target.value.length >= 3) {
     searchRecipe(search.value);
   }
@@ -144,7 +155,7 @@ document.getElementById('search').addEventListener("input", (e) => {
 });
 
 const filterRecipe = async (searchBox) => {
-  document.getElementById('recipeList').innerHTML = ""
+  document.getElementById("recipeList").innerHTML = "";
 
   const res = await fetch("recipes.json");
   const recipes = await res.json();
@@ -155,71 +166,64 @@ const filterRecipe = async (searchBox) => {
   getContent(fits);
 };
 
- const binary = (val, arr) => {
+const binary = (val, arr) => {
   let lower = 0;
-  let upper = arr.length - 1
+  let upper = arr.length - 1;
 
-  while(lower <= upper){
-    console.log("try")
-    const middle = lower + Math.floor((upper - lower)/ 2);
+  while (lower <= upper) {
+    console.log("try");
+    const middle = lower + Math.floor((upper - lower) / 2);
 
-  if(val === arr[middle]){
-     return middle
+    if (val === arr[middle]) {
+      return middle;
+    }
+    if (val < arr[middle]) {
+      upper = middle - 1;
+    } else {
+      lower = middle + 1;
+    }
   }
-  if(val < arr[middle]){
-     upper = middle - 1
-  } else {
-     lower = middle + 1
-  }
-}
   return -1;
- }
+};
 // console.log(binary('Brown Sugar', 'searchedValue'))
-ingredientsForm.addEventListener("submit", function(e){
-   e.preventDefault()
-   searchIngredients(ingreinput.value)
-   ingreinput.innerHTML = " ";
- })
+ingredientsForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  searchIngredients(ingreinput.value);
+  ingreinput.innerHTML = " ";
+});
 
-  const searchIngredients = async (value) => {
-    const res = await fetch("recipes.json");
-    const data = await res.json();
-    
-    ingredientsList = [];
-    recipes = data.recipes;
-       for(var i = 0; i < recipes.length; i++){
-         for(var j = 0; j < reipes[i].ingredients.length; j++){
-           ingredientsList.push(recipes[i].ingredients[j].ingredient)
-         }
-        }
-        ingredientsList = ingredientsList.sort();
-        if(binary(value, ingredientsList) != -1){
-            outputHtmlContent([value])
-        } else {
-            outputHtmlContent([])
-        }
-     }
-  
- 
-  const outputHtmlContent = (fits) => {
-    if(fits.length > 0){
-      const html = fits
+const searchIngredients = async (value) => {
+  const res = await fetch("recipes.json");
+  const data = await res.json();
+
+  ingredientsList = [];
+  recipes = data.recipes;
+  for (var i = 0; i < recipes.length; i++) {
+    for (var j = 0; j < recipes[i].ingredients.length; j++) {
+      ingredientsList.push(recipes[i].ingredients[j].ingredient);
+    }
+  }
+  ingredientsList = ingredientsList.sort();
+  if (binary(value, ingredientsList) != -1) {
+    outputHtmlContent([value]);
+  } else {
+    outputHtmlContent([]);
+  }
+};
+
+const outputHtmlContent = (fits) => {
+  if (fits.length > 0) {
+    const html = fits
       .map(
         (fit) => `
           <div id="ingredientSearch class="col s12">
-           <h4 id="ingredientSearch" class="card title m1">${fits}</h4>
-        </div>`
+           <h4 id="ingredientSearch" class="card title m1">${fit}</h4>
+        </div> `
       )
-      .join('');
-     document.getElementById("ingredientsList").innerHTML = html
-    } else {
-      document.getElementById("ingredientsList").innerHTML = "No recipe matches your criteria..."
-    }
+      .join("");
+    document.getElementById("ingredientsList").innerHTML = html;
+  } else {
+    document.getElementById("ingredientsList").innerHTML = "No Such Element";
   }
+};
 
- 
- 
- 
- 
- 
- 
