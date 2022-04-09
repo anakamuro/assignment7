@@ -14,8 +14,8 @@ fetch("recipes.json")
     recipes = data.recipes
     for (var i = 0; i < recipes.length; i++) {
       for (var j = 0; j < recipes[i].ingredients.length; j++){
-        ingredientsList = ingredientsList + `<option value="${recipes[i].ingredients[j].ingredient}'>${recipes[i].ingredients[j].ingredient}</option>`;
-        deviceList = deviceList + `<option value="${recipes[i].appliance}'>${recipes[i].appliance}</option>`
+        ingredientsList = ingredientsList + `<option value='${recipes[i].ingredients[j].ingredient}' class="inggredient">${recipes[i].ingredients[j].ingredient}</option>`;
+        deviceList = deviceList + `<option value='${recipes[i].appliance}'>${recipes[i].appliance}</option>`
         ustensilsList = ustensilsList + `<option value="${recipes[i].ustensils}'>${recipes[i].ustensils}</option>`
       }
     }
@@ -174,6 +174,8 @@ const filterRecipe = async (searchBox) => {
 }
   return -1;
  }
+
+ let ingredientsForm = document.getElementById('ingredientsForm');       
 // console.log(binary('Brown Sugar', 'searchedValue'))
 ingredientsForm.addEventListener("submit", function(e){
    e.preventDefault()
@@ -184,12 +186,14 @@ ingredientsForm.addEventListener("submit", function(e){
   const searchIngredients = async (value) => {
     const res = await fetch("recipes.json");
     const data = await res.json();
-    
+    /*let ingreInputV = document.getElementById('ingredients_search_input').value;
+    ingreInputV = ingreInputV.toLowerCase();
+    let x = document.getElementsByClassName('ingredient')*/
     ingredientsList = [];
     recipes = data.recipes;
        for(var i = 0; i < recipes.length; i++){
          for(var j = 0; j < reipes[i].ingredients.length; j++){
-           ingredientsList.push(recipes[i].ingredients[j].ingredient)
+           ingredientsList.push(x.recipes[i].ingredients[j].ingredient)
          }
         }
         ingredientsList = ingredientsList.sort();
@@ -217,8 +221,19 @@ ingredientsForm.addEventListener("submit", function(e){
     }
   }
 
- 
- 
+  /*
+ function search_ingredient(){
+    let ingreInputV = document.getElementById('ingredients_search_input').value;
+    ingreInputV = ingreInputV.toLowerCase();
+    let x = document.getElementsByClassName('ingredient')
+    for(var i = 0; i < x.length; i++){
+      if(!x[i].innerHTML.toLowerCase().includes(input)){
+        x[i].style.display = "none"
+      }
+        x[i].style.display = "list-item"
+ }
+}
+*/
  
  
  

@@ -1,6 +1,6 @@
 let ingredrop = document.getElementById('ingredients_search_dropdown');
 let ingreinput = document.getElementById('ingredients_search_input');
-let ingredientsForm = document.getElementById('ingredientsForm');                  
+           
 
 ingredrop.addEventListener('click', function(){
   document.getElementById('ingredients_search_dropdown').style.zindex = "-1"
