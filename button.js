@@ -34,3 +34,10 @@ ustensils_search_dropdown.addEventListener('click', function(){
   document.getElementById('ustensils_search_dropdown').style.width = "200px"
   document.getElementById('ustensils_search_input').style.zindex = "1"
  })
+/*
+ let search = document.getElementById('search');
+
+    ingredrop.addEventListener('click', function(){
+     search.innerHTML = ingreinput.value;
+    })
+    */

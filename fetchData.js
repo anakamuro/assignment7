@@ -20,10 +20,10 @@ fetch("recipes.json")
       for (var j = 0; j < recipes[i].ingredients.length; j++) {
         ingredientsList =
           ingredientsList +
-          `<option value="${recipes[i].ingredients[j].ingredient}'>${recipes[i].ingredients[j].ingredient} </option>`;
+          `<option value="${recipes[i].ingredients[j].ingredient}'>${recipes[i].ingredients[j].ingredient}</option>`;
         deviceList =
           deviceList +
-          `<option value="${recipes[i].appliance}">${recipes[i].appliance}</option>`;
+          `<option value="${recipes[i].appliance}'>${recipes[i].appliance}</option>`;
         ustensilsList =
           ustensilsList +
           `<option value="${recipes[i].ustensils}'>${recipes[i].ustensils}</option>`;
@@ -153,17 +153,7 @@ document.getElementById("search").addEventListener("input", (e) => {
     recipeList.innerHTML = "";
   }
 });
-/*
-document.getElementById("ingredients_search_input").addEventListener("input", (e) => {
-    if (e.target.value.length >= 3) {
-      searchRecipe(search.value);
-    }
-    if (e.target.value.length < 3) {
-      fits = [];
-      recipeList.innerHTML = "";
-    }
-  });
-*/
+
 const filterRecipe = async (searchBox) => {
   document.getElementById("recipeList").innerHTML = "";
 
@@ -175,19 +165,7 @@ const filterRecipe = async (searchBox) => {
   });
   getContent(fits);
 };
-/*
-const filterIngredients = async (searchBox) => {
-    document.getElementById("ingredientsList").innerHTML = "";
-  
-    const res = await fetch("recipes.json");
-    const recipes = await res.json();
-  
-    let fits = recipes.recipes.filter((recipe) => {
-      return recipe.ingredients[0].ingredient == searchBox;
-    });
-    getContent(fits);
-  };
-*/
+
 const binary = (val, arr) => {
   let lower = 0;
   let upper = arr.length - 1;
@@ -214,17 +192,6 @@ ingredientsForm.addEventListener("submit", function (e) {
   ingreinput.innerHTML = " ";
 });
 
-deviceForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    searchDevice(deviceinput.value);
-    deviceinput.innerHTML = " ";
-  });
-  ustenForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    searchUstensils(usteInput.value);
-    usteInput.innerHTML = " ";
-  });
-
 const searchIngredients = async (value) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
@@ -243,43 +210,8 @@ const searchIngredients = async (value) => {
     outputHtmlContent([]);
   }
 };
-/*
-const searchDevice = async (value) => {
-    const res = await fetch("recipes.json");
-    const data = await res.json();
-  
-    deviceList = [];
-    recipes = data.recipes;
-    for (var i = 0; i < recipes.length; i++) {
-        deviceList.push(recipes[i].appliance);
-      }
-    }
-    deviceList = deviceList.sort();
-    if (binary(value, deviceList) != -1) {
-      outputDeviceContent([value]);
-    } else {
-      outputDeviceContent([]);
-    }
 
-    const searchUstensils = async (value) => {
-        const res = await fetch("recipes.json");
-        const data = await res.json();
-      
-        ustensilsList = [];
-        recipes = data.recipes;
-        for (var i = 0; i < recipes.length; i++) {
-            ustensilsList.push(recipes[i].ustensils);
-          }
-        }
-        ustensilsList = ustensilsList.sort();
-        if (binary(value, ustensilsList) != -1) {
-          outputUsetenContent([value]);
-        } else {
-          outputUstenContent([]);
-        }
-*/
 const outputHtmlContent = (fits) => {
-    //let x = document.getElementsByClassName('ingredient')
   if (fits.length > 0) {
     const html = fits
       .map(
@@ -291,59 +223,25 @@ const outputHtmlContent = (fits) => {
       .join("");
     document.getElementById("ingredientsList").innerHTML = html;
   } else {
-    document.getElementById("ingredientsList").innerHTML = "No recipe matches your criteria...";
-  }
-};
-
-const outputDeviceContent = (fits) => {
-    let x = document.getElementsByClassName('ingredient')
-  if (fits.length > 0) {
-    const html = fits
-      .map(
-        (fit) => `
-          <div id="deviceSearch class="col s12">
-           <h4 id="deviceSearch" class="card title m1">${fit}</h4>
-        </div> `
-      )
-      .join("");
-    document.getElementById("deviceList").innerHTML = html;
-  } else {
-    document.getElementById("deviceList").innerHTML = "No recipe matches your criteria...";
-  }
-};
-
-const outputUstenContent = (fits) => {
-    let x = document.getElementsByClassName('ingredient')
-  if (fits.length > 0) {
-    const html = fits
-      .map(
-        (fit) => `
-          <div id="ustensilsSearch class="col s12">
-           <h4 id="ustensilsSearch" class="card title m1">${fit}</h4>
-        </div> `
-      )
-      .join("");
-    document.getElementById("ustensilsList").innerHTML = html;
-  } else {
-    document.getElementById("ustensilsList").innerHTML = "No recipe matches your criteria...";
+    document.getElementById("ingredientsList").innerHTML = "No Such Element";
   }
 };
 
 function selIngredient(){
-    var ingredientsDropdown = document.getElementById('ingredients_search_dropdown');
-    document.getElementById("ingredients_search_input").value = ingredientsDropdown.options[ingredientsDropdown.selectedIndex].text;
+  var ingredientsDropdown = document.getElementById('ingredients_search_dropdown');
+  document.getElementById("ingredients_search_input").value = ingredientsDropdown.options[ingredientsDropdown.selectedIndex].text;
 }
 function changeIngre(){
-    document.getElementById("ingredients_search_input").value = document.getElementById("search").text
+  document.getElementById("ingredients_search_input").value = document.getElementById("search").text
 }
 function selDevice(){
-    var deviceDropdown = document.getElementById('device_search_dropdown');
-    document.getElementById("device_search_input").value = deviceDropdown.options[deviceDropdown.selectedIndex].text;
+  var deviceDropdown = document.getElementById('device_search_dropdown');
+  document.getElementById("device_search_input").value = deviceDropdown.options[deviceDropdown.selectedIndex].text;
 }
 /*
 function selUstensils(){
-    var ustenDropdown = document.getElementById('ustensils_search_dropdown');
-    document.getElementById("ustensils_search_input").value = ustenDropdown.options[ustenDropdown.selectedIndex].text;
+  var ustenDropdown = document.getElementById('ustensils_search_dropdown');
+  document.getElementById("ustensils_search_input").value = ustenDropdown.options[ustenDropdown.selectedIndex].text;
 }*/
 
 let cotext = document.getElementById('cotext');
@@ -351,8 +249,9 @@ let coInput = document.querySelector('.coco');
 let point = document.querySelector('.fa-times-circle-o'); 
 
 cotext.addEventListener("click", (e) => {
-   coInput.style.display ="inline";
-   cotext.style.display = "none"
-   point.style.display = "none"
+ coInput.style.display ="inline";
+ cotext.style.display = "none"
+ point.style.display = "none"
 }
 )
+
