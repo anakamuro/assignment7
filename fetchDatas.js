@@ -22,29 +22,34 @@ fetch("recipes.json")
       for (var j = 0; j < recipes[i].ingredients.length; j++) {
         ingredientsList =
           ingredientsList +
-          `<option value="${recipes[i].ingredients[j].ingredient}'>${recipes[i].ingredients[j].ingredient}</option>`;
-          deviceList.push(recipes[i].appliance)
+          `<option value="${recipes[i].ingredients[j].ingredient}' >${recipes[i].ingredients[j].ingredient}</option>`;
+        deviceList.push(recipes[i].appliance);
 
-           for(var k=0; k < (recipes[i].ustensils).length; k++){
-             ustensilsList.push(recipes[i].ustensils[k])
-           }
-         console.log(ustensilsList)
-          }
+        
+        for(var k=0 ; k< (recipes[i].ustensils).length; k++){
+          ustensilsList.push(recipes[i].ustensils[k]);
+
         }
-
-       newDeviceList = removeDuplicates(deviceList);
-       for (var i=0; i < newDeviceList.length; i++){
-       deviceListOptions =
-          deviceListOptions +
-          `<option value="${newDeviceList[i]}'>${newDeviceList[i]}</option>`;
-       }
-       newUstensilsList = removeDuplicates(ustensilsList);
-       for (var i=0; i < newUstensilsList.length; i++){
-        ustensilsListOptions =
-          ustensilsListOptions +
-          `<option value="${newUstensilsList[i]}'>${newUstensilsList[i]}</option>`;
+        console.log(ustensilsList)
       }
-    
+    }
+
+    // Duplicates Removal Process
+    newDeviceList = removeDuplicates(deviceList);
+    for (var i = 0; i < newDeviceList.length; i++) {
+      deviceListOptions =
+        deviceListOptions +
+        `<option value="${newDeviceList[i]}" >${newDeviceList[i]}</option>`;
+    }
+
+    newUstensilsList = removeDuplicates(ustensilsList);
+    for (var i = 0; i < newUstensilsList.length; i++) {
+      ustensilsListOptions =
+      ustensilsListOptions +
+        `<option value="${newUstensilsList[i]}">${newUstensilsList[i]}</option>`;
+    }
+  
+    // Options for Select
     ingredients_search_dropdown.innerHTML =
       '<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">' +
       ingredientsList;
@@ -110,7 +115,7 @@ const searchRecipe = async (searchBox) => {
   //console.log(recipes)
 
   let fits = data.recipes.filter((recipe) => {
-    console.log("try")
+    console.log("try");
     const regex = new RegExp(`^${searchBox}`, "gi");
     return (
       recipe.name.match(regex) ||
@@ -175,12 +180,13 @@ const filterRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const recipes = await res.json();
   let fits = recipes.recipes.filter((recipe) => {
-    return recipe.name == searchBox;
+    return recipe.name == searchBox  ;
   });
+
   getContent(fits);
 };
 
-const filterIngredients = async (searchBox) => {
+const filterIngredient = async (searchBox) => {
   document.getElementById("recipeList").innerHTML = "";
 
   const res = await fetch("recipes.json");
@@ -189,11 +195,9 @@ const filterIngredients = async (searchBox) => {
   console.log(typeof(recipes.recipes))
   let fits = recipes.recipes.filter((recipe) => {
     console.log("78452",recipe.ingredients[0].ingredient)
-    return recipe.ingredients[1].ingredient == searchBox ||
-           recipe.ingredients[2].ingredient == searchBox ||
-           (recipe.ingredients[3]? recipe.ingredients[3].ingredient == searchBox: null) ||
-           (recipe.ingredients[4]? recipe.ingredients[4].ingredient == searchBox: null)
+    return recipe.ingredients[0].ingredient == searchBox  || recipe.ingredients[1].ingredient == searchBox || recipe.ingredients[2].ingredient == searchBox || (recipe.ingredients[3]? recipe.ingredients[3].ingredient  == searchBox: null) || (recipe.ingredients[4]? recipe.ingredients[4].ingredient  == searchBox: null) ;
   });
+
   getContent(fits);
 };
 
@@ -217,6 +221,7 @@ const binary = (val, arr) => {
   return -1;
 };
 // console.log(binary('Brown Sugar', 'searchedValue'))
+
 ingredientsForm.addEventListener("submit", function (e) {
   e.preventDefault();
   searchIngredients(ingreinput.value);
@@ -248,7 +253,8 @@ const outputHtmlContent = (fits) => {
       .map(
         (fit) => `
           <div id="ingredientSearch class="col s12">
-           <h4 id="ingredientSearch" class="card title m1" onclick=filterIngredient('${fit}')>${fit}</h4>
+           <h4 id="ingredientSearch" class="card-title m1" onclick="filterIngredient('${fit}')">${fit}</h4>
+
         </div> `
       )
       .join("");
@@ -258,6 +264,6 @@ const outputHtmlContent = (fits) => {
   }
 };
 
-function removeDuplicates(arr){
-  return arr.filter((item, index)=> arr.indexOf(item) === index);
+function removeDuplicates(arr) {
+  return arr.filter((item, index) => arr.indexOf(item) === index);
 }

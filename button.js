@@ -1,8 +1,8 @@
-let ingredrop = document.getElementById('ingredients_search_dropdown');
+//let ingredrop = document.getElementById('ingredients_search_dropdown');
 let ingreinput = document.getElementById('ingredients_search_input');
            
 
-ingredrop.addEventListener('click', function(){
+ingredients_search_dropdown.addEventListener('click', function(){
   document.getElementById('ingredients_search_dropdown').style.zindex = "-1"
   document.getElementById('ingredients_search_input').style.display = "block"
   document.getElementById('ingredients_search_input').style.zindex = "1"
