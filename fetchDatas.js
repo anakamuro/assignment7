@@ -2,7 +2,7 @@ var ingredientsList = `<option value="ingredients">Ingredients</option>`;
 var deviceList = [];
 var deviceListOptions = `<option value="devices">Device</option>`;
 var ustensilsList = [];
-var ustensilsListOptions = `<option value="ustensils">Utensils</option>`;
+var ustensilsListOptions = `<option value="utensils">Utensils</option>`;
 
 ingredients_search_dropdown = document.getElementById(
   "ingredients_search_dropdown"
@@ -28,20 +28,23 @@ fetch("recipes.json")
            for(var k=0; k < (recipes[i].ustensils).length; k++){
              ustensilsList.push(recipes[i].ustensils[k])
            }
+ 
           }
         }
 
        newDeviceList = removeDuplicates(deviceList);
+       console.log(newDeviceList)
        for (var i=0; i < newDeviceList.length; i++){
        deviceListOptions =
           deviceListOptions +
           `<option value="${newDeviceList[i]}">${newDeviceList[i]}</option>`;
        }
+       console.log(deviceListOptions)
        newUstensilsList = removeDuplicates(ustensilsList);
        for (var i=0; i < newUstensilsList.length; i++){
         ustensilsListOptions =
           ustensilsListOptions +
-          `<option value="${newUstensilsList[i]}">${newUstensilsList[i]}</option>`;
+          `<option  value="${newUstensilsList[i]}" >${newUstensilsList[i]}</option>`;
       }
     
     ingredients_search_dropdown.innerHTML =
@@ -56,7 +59,6 @@ fetch("recipes.json")
   });
 
 function getContent(recipes) {
-  console.log(recipes);
   let recipeList = [];
   for (var i = 0; i < recipes.length; i++) {
     var output = document.querySelector(".row");
@@ -103,11 +105,14 @@ function getContent(recipes) {
   output.innerHTML = recipeList;
 }
 
+
+
 const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
-  //console.log(recipes)
 
+
+  // **************************** RECIPE WORK *******************************************
   let fits = data.recipes.filter((recipe) => {
     console.log("try")
     const regex = new RegExp(`^${searchBox}`, "gi");
@@ -157,7 +162,6 @@ const outputHtml = (fits) => {
     document.getElementById("recipeList").innerHTML = html;
   }
 };
-
 const filterRecipe = async (searchBox) => {
   document.getElementById("recipeList").innerHTML = "";
 
@@ -179,6 +183,10 @@ document.getElementById("search").addEventListener("input", (e) => {
   }
 });
 
+// **************************** RECIPE WORK END ***************************************
+
+
+// **************************** Ingredient WORK *******************************************
 const searchIngredients = async (value) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
@@ -239,32 +247,39 @@ ingredientsForm.addEventListener("submit", function (e) {
   ingreinput.innerHTML = " ";
 });
 
+// **************************** Ingredient WORK END *******************************************
+
+// **************************** DEVICE WORK   *******************************************
 const searchDevice = async (value) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
-
-  applianceList = [];
+  appliancesList = [];
   recipes = data.recipes;
   for (var i = 0; i < recipes.length; i++) {
-      applianceList.push(recipes[i].appliance);
+    appliancesList.push(recipes[i].appliance);
   }
-  applianceList = applianceList.sort();
-  if (binary(value, applianceList) != -1) {
+  appliancesList = appliancesList.sort();
+  if (binary(value, appliancesList) != -1) {
     outputDeviceHtmlContent([value]);
   } else {
     outputDeviceHtmlContent([]);
   }
-}
+};
 
 const filterDevice = async (searchBox) => {
   document.getElementById("recipeList").innerHTML = "";
+
   const res = await fetch("recipes.json");
   const recipes = await res.json();
   let fits = recipes.recipes.filter((recipe) => {
+
     return recipe.appliance == searchBox 
+
   });
   getContent(fits);
 };
+
+
 
 const outputDeviceHtmlContent = (fits) => {
   if (fits.length > 0) {
@@ -276,76 +291,79 @@ const outputDeviceHtmlContent = (fits) => {
         </div> `
       )
       .join("");
-    document.getElementById("applianceList").innerHTML = html;
+    document.getElementById("ingredientsList").innerHTML = html;
   } else {
-    document.getElementById("applianceList").innerHTML = "No recipe matches your criteria...";
+    document.getElementById("ingredientsList").innerHTML = "No recipe matches your criteria...";
   }
 };
-
 deviceForm.addEventListener("submit", function (e) {
+
   e.preventDefault();
-  searchDevice(deviceinput.value);
-  deviceinput.innerHTML = " ";
+  searchDevice(device_search_input.value);
+  device_search_input.innerHTML = " ";
 });
 
+
+// **************************** DEVICE WORK END *******************************************
+
+// **************************** UTENSIL WORK  *******************************************
 const searchUstensils = async (value) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
-
-  ustensilssList = [];
+  utensilssList = [];
   recipes = data.recipes;
   for (var i = 0; i < recipes.length; i++) {
-    for (var j = 0; i < recipes[i].ustensils.length; j++) {
-      ustensilssList.push(recipes[i].ustensils[j]);
+    for (var j = 0; j < recipes[i].ustensils.length; j++) {
+      utensilssList.push(recipes[i].ustensils[j]);
     }
   }
-  ustensilssList = ustensilssList.sort();
-  if (binary(value, ustensilssList) != -1) {
-    outputUstenHtmlContent([value]);
+  utensilssList = utensilssList.sort();
+  if (binary(value, utensilssList) != -1) {
+    outputUtensilHtmlContent([value]);
   } else {
-    outputUstenHtmlContent([]);
+    outputUtensilHtmlContent([]);
   }
-}
+};
 
-const filterUstensils = async (searchBox) => {
+const filterUtensil = async (searchBox) => {
   document.getElementById("recipeList").innerHTML = "";
-
   const res = await fetch("recipes.json");
   const recipes = await res.json();
   console.log(recipes.recipes)
   console.log(typeof(recipes.recipes))
   let fits = recipes.recipes.filter((recipe) => {
+    console.log("78452",recipe.ingredients[0].ingredient)
     return recipe.ustensils[0] == searchBox ||
            recipe.ustensils[1] == searchBox ||
-          (recipe.ustensils[2]?recipe.ustensils[2] == searchBox: null) ||
-          (recipe.ustensils[3]?recipe.ustensils[3] == searchBox: null) ||
-          (recipe.ustensils[4]?recipe.ustensils[4] == searchBox: null) 
+           (recipe.ustensils[2]? recipe.ustensils[2] == searchBox: null) ||
+           (recipe.ustensils[3]? recipe.ustensils[3] == searchBox: null) ||
+           (recipe.ustensils[4]? recipe.ustensils[4] == searchBox: null)
   });
   getContent(fits);
 };
-
-const outputUstenHtmlContent = (fits) => {
+const outputUtensilHtmlContent = (fits) => {
   if (fits.length > 0) {
     const html = fits
       .map(
         (fit) => `
           <div id="ingredientSearch" class="col s12">
-           <h4 id="ingredientSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}</h4>
+           <h4 id="ingredientSearch" class="card title m1" onclick="filterUtensil('${fit}')">${fit}</h4>
         </div> `
       )
       .join("");
-    document.getElementById("ustensilssList").innerHTML = html;
+    document.getElementById("ingredientsList").innerHTML = html;
   } else {
-    document.getElementById("ustensilssList").innerHTML = "No recipe matches your criteria...";
+    document.getElementById("ingredientsList").innerHTML = "No recipe matches your criteria...";
   }
 };
 
 ustenForm.addEventListener("submit", function (e) {
   e.preventDefault();
-  searchUstensils(usteInput.value);
-  usteinput.innerHTML = " ";
+  searchUtensils(ustensils_search_input.value);
+  ingreinput.innerHTML = " ";
 });
 
+// **************************** UTENSIL WORK END *******************************************
 
 
 const binary = (val, arr) => {
@@ -367,7 +385,8 @@ const binary = (val, arr) => {
   }
   return -1;
 };
-// console.log(binary('Brown Sugar', 'searchedValue'))
+
+
 
 function removeDuplicates(arr){
   return arr.filter((item, index)=> arr.indexOf(item) === index);
