@@ -109,7 +109,7 @@ const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
   //console.log(recipes)
-
+//recipes
   let fits = data.recipes.filter((recipe) => {
     console.log("try")
     const regex = new RegExp(`^${searchBox}`, "gi");
@@ -181,6 +181,8 @@ document.getElementById("search").addEventListener("input", (e) => {
   }
 });
 
+//ingredients
+
 const searchIngredients = async (value) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
@@ -244,6 +246,8 @@ ingredientsForm.addEventListener("submit", function (e) {
   ingreinput.innerHTML = " ";
 });
 
+//Device
+
 const searchDevice = async (value) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
@@ -295,6 +299,8 @@ deviceForm.addEventListener("submit", function (e) {
   searchDevice(device_search_input.value);
   deviceinput.innerHTML = " ";
 });
+
+//ustensils
 
 const searchUstensils = async (value) => {
   const res = await fetch("recipes.json");

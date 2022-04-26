@@ -309,3 +309,9 @@ input#ustensils_search_input {
     color: #E7E7E7;
     border-color: none;
 }
+.coco-close {
+    position: relative;
+    top: -45px;
+    left: 65px;
+    
+}
