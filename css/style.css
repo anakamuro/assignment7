@@ -143,6 +143,57 @@
 #recipeSearch {
    cursor: pointer;  
 }
+#ingredientSearch {
+    background-color:#0d6efd;
+    color: white;
+    position: relative;
+    left: -201px;
+    text-align: center;
+}
+#ingredientsSearch {
+    background-color:#0d6efd;
+    color: white;
+    position: relative;
+    height: 40px;
+    left: -70px;
+    top: -145px;
+    text-align: center;
+    display: inline;
+}
+#devicesSearch {
+    background-color: #6AD6A5;
+    color: white;
+    position: relative;
+    height: 40px;
+    left: -70px;
+    top: -190px;
+    text-align: center;
+    display: inline;
+}
+#deviceSearch {
+    background-color: #6AD6A5;
+    color: white;
+    position: relative;
+    left: 0px;
+    text-align: center;
+}
+#ustenSearch {
+    background-color: #bb2d3b;
+    color: white;
+    position: relative;
+    left: 0px;
+    text-align: center;
+}
+#ustensSearch {
+    background-color: #bb2d3b;
+    color: white;
+    position: relative;
+    height: 40px;
+    left: 0px;
+    top: -190px;
+    text-align: center;
+    display: inline;
+}
 #grid {
     display: flex;
 }

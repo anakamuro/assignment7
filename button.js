@@ -60,3 +60,12 @@ cotext.addEventListener("click", (e) => {
    point.style.display = "none"
 }
 )
+
+let ingreCancel = document.querySelector('i#ingre-cancel');
+let ingredientsSearch = document.getElementById('ingre');
+
+ingreCancel.addEventListener("click", (e) => {
+  ingredientsSearch.style.display = "none";
+}
+)
+

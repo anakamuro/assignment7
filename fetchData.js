@@ -2,7 +2,7 @@ var ingredientsList = `<option value="ingredients">Ingredients</option>`;
 var deviceList = [];
 var deviceListOptions = `<option value="devices">Device</option>`;
 var ustensilsList = [];
-var ustensilsListOptions = `<option value="ustensils">Utensils</option>`;
+var ustensilsListOptions = `<option value="ustensils">Ustensils</option>`;
 
 ingredients_search_dropdown = document.getElementById(
   "ingredients_search_dropdown"
@@ -32,16 +32,18 @@ fetch("recipes.json")
         }
 
        newDeviceList = removeDuplicates(deviceList);
+       console.log(newDeviceList)
        for (var i=0; i < newDeviceList.length; i++){
        deviceListOptions =
           deviceListOptions +
           `<option value="${newDeviceList[i]}">${newDeviceList[i]}</option>`;
        }
+       console.log(deviceListOptions)
        newUstensilsList = removeDuplicates(ustensilsList);
        for (var i=0; i < newUstensilsList.length; i++){
         ustensilsListOptions =
           ustensilsListOptions +
-          `<option value="${newUstensilsList[i]}">${newUstensilsList[i]}</option>`;
+          `<option  value="${newUstensilsList[i]}" >${newUstensilsList[i]}</option>`;
       }
     
     ingredients_search_dropdown.innerHTML =
@@ -144,7 +146,7 @@ const outputHtml = (fits) => {
        <div class="col s12">
        <div class="card grey darken-4 darken-1">
        <div class="card-content white-text">
-     <h4 id="recipeSearch class="card-title m1" onclick="filterRecipe('${fit.name}')">${fit.name}</h4>
+     <h4 id="recipeSearch" class="card-title m1" onclick="filterRecipe('${fit.name}')">${fit.name}</h4>
        </div>
        </div>
        </div>
@@ -222,7 +224,10 @@ const outputHtmlContent = (fits) => {
     const html = fits
       .map(
         (fit) => `
-          <div id="ingredientSearch" class="col s12">
+        <div id="ingre" class="col s12">
+        <h4 id="ingredientsSearch" class="card title m1" onclick="filterIngredient('${fit}')">${fit}&nbsp;<i id="ingre-cancel" class="fa fa-times-circle-o ingre-cancel" aria-hidden="true"></i></h4>
+     </div>
+          <div class="col s12">
            <h4 id="ingredientSearch" class="card title m1" onclick="filterIngredient('${fit}')">${fit}</h4>
         </div> `
       )
@@ -271,8 +276,11 @@ const outputDeviceHtmlContent = (fits) => {
     const html = fits
       .map(
         (fit) => `
-          <div id="ingredientSearch" class="col s12">
-           <h4 id="ingredientSearch" class="card title m1" onclick="filterDevice('${fit}')">${fit}</h4>
+        <div class="col s12">
+        <h4 id="devicesSearch" class="card title m1" onclick="filterDevice('${fit}')">${fit}&nbsp;<i class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
+     </div>
+          <div class="col s12">
+           <h4 id="deviceSearch" class="card title m1" onclick="filterDevice('${fit}')">${fit}</h4>
         </div> `
       )
       .join("");
@@ -284,7 +292,7 @@ const outputDeviceHtmlContent = (fits) => {
 
 deviceForm.addEventListener("submit", function (e) {
   e.preventDefault();
-  searchDevice(deviceinput.value);
+  searchDevice(device_search_input.value);
   deviceinput.innerHTML = " ";
 });
 
@@ -295,7 +303,7 @@ const searchUstensils = async (value) => {
   ustensilssList = [];
   recipes = data.recipes;
   for (var i = 0; i < recipes.length; i++) {
-    for (var j = 0; i < recipes[i].ustensils.length; j++) {
+    for (var j = 0; j < recipes[i].ustensils.length; j++) {
       ustensilssList.push(recipes[i].ustensils[j]);
     }
   }
@@ -317,9 +325,9 @@ const filterUstensils = async (searchBox) => {
   let fits = recipes.recipes.filter((recipe) => {
     return recipe.ustensils[0] == searchBox ||
            recipe.ustensils[1] == searchBox ||
-          (recipe.ustensils[2]?recipe.ustensils[2] == searchBox: null) ||
-          (recipe.ustensils[3]?recipe.ustensils[3] == searchBox: null) ||
-          (recipe.ustensils[4]?recipe.ustensils[4] == searchBox: null) 
+          (recipe.ustensils[2]? recipe.ustensils[2] == searchBox: null) ||
+          (recipe.ustensils[3]? recipe.ustensils[3] == searchBox: null) ||
+          (recipe.ustensils[4]? recipe.ustensils[4] == searchBox: null) 
   });
   getContent(fits);
 };
@@ -329,8 +337,11 @@ const outputUstenHtmlContent = (fits) => {
     const html = fits
       .map(
         (fit) => `
-          <div id="ingredientSearch" class="col s12">
-           <h4 id="ingredientSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}</h4>
+        <div class="col s12">
+        <h4 id="ustensSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}&nbsp;<i class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
+     </div>
+          <div class="col s12">
+           <h4 id="ustenSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}</h4>
         </div> `
       )
       .join("");
@@ -342,8 +353,8 @@ const outputUstenHtmlContent = (fits) => {
 
 ustenForm.addEventListener("submit", function (e) {
   e.preventDefault();
-  searchUstensils(usteInput.value);
-  usteinput.innerHTML = " ";
+  searchUstensils(ustensils_search_input.value);
+  usteInput.innerHTML = " ";
 });
 
 
@@ -385,3 +396,20 @@ function selUstensils(){
   var ustenDropdown = document.getElementById('ustensils_search_dropdown');
   document.getElementById("ustensils_search_input").value = ustenDropdown.options[ustenDropdown.selectedIndex].text;
 }
+/*
+ const obj = JSON.parse('./recipes.json');
+ console.log(obj)
+ */
+
+ let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+
+  function linearSearch(arr, elem){
+    for(let i=0; i< arr.length; i++){
+      if(arr[i] === elem){
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  console.log(linearSearch(arr, -5))
