@@ -52,12 +52,14 @@ ustensils_search_dropdown.addEventListener('click', function(){
 
     let cotext = document.getElementById('cotext');
   //  let coInput = document.querySelector('.coco');
-    let point = document.querySelector('.fa-times-circle-o'); 
+    let point = document.querySelector('.fa-times-circle-o');
+    let cocoClose = document.querySelector('.coco-close');
 
 cotext.addEventListener("click", (e) => {
    coInput.style.display ="inline";
    cotext.style.display = "none"
-   point.style.display = "none"
+   point.style.display = "inline"
+   cocoClose.style.display = "inline"
 }
 )
 

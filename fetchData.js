@@ -1,3 +1,6 @@
+var ingredientsTags = [];
+var appliancesTags = []
+var ustensTags = []
 var ingredientsList = `<option value="ingredients">Ingredients</option>`;
 var deviceList = [];
 var deviceListOptions = `<option value="devices">Device</option>`;
@@ -32,13 +35,11 @@ fetch("recipes.json")
         }
 
        newDeviceList = removeDuplicates(deviceList);
-       console.log(newDeviceList)
        for (var i=0; i < newDeviceList.length; i++){
        deviceListOptions =
           deviceListOptions +
           `<option value="${newDeviceList[i]}">${newDeviceList[i]}</option>`;
        }
-       console.log(deviceListOptions)
        newUstensilsList = removeDuplicates(ustensilsList);
        for (var i=0; i < newUstensilsList.length; i++){
         ustensilsListOptions =
@@ -58,7 +59,6 @@ fetch("recipes.json")
   });
 
 function getContent(recipes) {
-  console.log(recipes);
   let recipeList = [];
   for (var i = 0; i < recipes.length; i++) {
     var output = document.querySelector(".row");
@@ -108,8 +108,7 @@ function getContent(recipes) {
 const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
-  //console.log(recipes)
-//recipes
+
   let fits = data.recipes.filter((recipe) => {
     console.log("try")
     const regex = new RegExp(`^${searchBox}`, "gi");
@@ -196,7 +195,8 @@ const searchIngredients = async (value) => {
   }
   ingredientsList = ingredientsList.sort();
   if (binary(value, ingredientsList) != -1) {
-    outputHtmlContent([value]);
+    ingredientsTags.push(value)
+    outputHtmlContent(ingredientsTags);
   } else {
     outputHtmlContent([]);
   }
@@ -208,10 +208,7 @@ const filterIngredient = async (searchBox) => {
 
   const res = await fetch("recipes.json");
   const recipes = await res.json();
-  console.log(recipes.recipes)
-  console.log(typeof(recipes.recipes))
   let fits = recipes.recipes.filter((recipe) => {
-    console.log("78452",recipe.ingredients[0].ingredient)
     return recipe.ingredients[0].ingredient == searchBox ||
            recipe.ingredients[1].ingredient == searchBox ||
            recipe.ingredients[2].ingredient == searchBox ||
@@ -223,22 +220,32 @@ const filterIngredient = async (searchBox) => {
 
 const outputHtmlContent = (fits) => {
   if (fits.length > 0) {
-    const html = fits
+    var html = `<div id="ingredientMain">`
+     html = fits
       .map(
-        (fit) => `
-        <div id="ingre" class="col s12">
-        <h4 id="ingredientsSearch" class="card title m1" onclick="filterIngredient('${fit}')">${fit}&nbsp;<i id="ingre-cancel" class="fa fa-times-circle-o ingre-cancel" aria-hidden="true"></i></h4>
-     </div>
-          <div class="col s12">
-           <h4 id="ingredientSearch" class="card title m1" onclick="filterIngredient('${fit}')">${fit}</h4>
-        </div> `
+        (fit, index) => `
+        
+        <h4 id="ingredientsSearch" class="card title m1" onclick="filterIngredient('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeTag(${index}) class="fa fa-times-circle-o ingre-cancel" aria-hidden="true"></i></h4>
+       `
       )
       .join("");
+     html+= `</div>`
+     html+=  `<div class="col s12">
+      <h4 id="ingredientSearch" class="card title m1" onclick="filterIngredient('${fits[fits.length - 1]}')">${fits[fits.length -1]}</h4>
+   </div>`
     document.getElementById("ingredientsList").innerHTML = html;
   } else {
     document.getElementById("ingredientsList").innerHTML = "No recipe matches your criteria...";
   }
 };
+
+function removeTag(index){
+  ingredientsTags.splice(index, 1)
+  outputHtmlContent(ingredientsTags)
+  if(ingredientsTags.length == 0){
+    document.getElementById("ingredientsList").innerHTML = "";
+  }
+}
 
 ingredientsForm.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -259,7 +266,8 @@ const searchDevice = async (value) => {
   }
   applianceList = applianceList.sort();
   if (binary(value, applianceList) != -1) {
-    outputDeviceHtmlContent([value]);
+    appliancesTags.push(value)
+    outputDeviceHtmlContent(appliancesTags);
   } else {
     outputDeviceHtmlContent([]);
   }
@@ -277,22 +285,31 @@ const filterDevice = async (searchBox) => {
 
 const outputDeviceHtmlContent = (fits) => {
   if (fits.length > 0) {
-    const html = fits
-      .map(
-        (fit) => `
-        <div class="col s12">
-        <h4 id="devicesSearch" class="card title m1" onclick="filterDevice('${fit}')">${fit}&nbsp;<i class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
-     </div>
-          <div class="col s12">
-           <h4 id="deviceSearch" class="card title m1" onclick="filterDevice('${fit}')">${fit}</h4>
-        </div> `
+    var html = `<div id="applianceMain">`
+    html = fits
+     .map(
+       (fit, index) => `
+        <h4 id="devicesSearch" class="card title m1" onclick="filterDevice('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
+        `
       )
-      .join("");
+      .join("")
+    html+= `</div>`
+    html+= `<div class="col s12">
+           <h4 id="deviceSearch" class="card title m1" onclick="filterDevice('${fits[fits.length-1]}')">${fits[fits.length-1]}</h4>
+        </div> `
     document.getElementById("applianceList").innerHTML = html;
   } else {
     document.getElementById("applianceList").innerHTML = "No recipe matches your criteria...";
   }
 };
+
+function removeTag(index){
+  appliancesTags.splice(index,1)
+  outputDeviceHtmlContent(appliancesTags)
+  if (appliancesTags.length == 0){
+  document.getElementById("applianceList").innerHTML = "";
+}
+}
 
 deviceForm.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -315,7 +332,8 @@ const searchUstensils = async (value) => {
   }
   ustensilssList = ustensilssList.sort();
   if (binary(value, ustensilssList) != -1) {
-    outputUstenHtmlContent([value]);
+    ustensTags.push(value)
+    outputUstenHtmlContent(ustensTags);
   } else {
     outputUstenHtmlContent([]);
   }
@@ -326,8 +344,6 @@ const filterUstensils = async (searchBox) => {
 
   const res = await fetch("recipes.json");
   const recipes = await res.json();
-  console.log(recipes.recipes)
-  console.log(typeof(recipes.recipes))
   let fits = recipes.recipes.filter((recipe) => {
     return recipe.ustensils[0] == searchBox ||
            recipe.ustensils[1] == searchBox ||
@@ -340,22 +356,31 @@ const filterUstensils = async (searchBox) => {
 
 const outputUstenHtmlContent = (fits) => {
   if (fits.length > 0) {
-    const html = fits
+    var html = `<div id="ustenMain">`
+     html = fits
       .map(
-        (fit) => `
-        <div class="col s12">
-        <h4 id="ustensSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}&nbsp;<i class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
-     </div>
-          <div class="col s12">
-           <h4 id="ustenSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}</h4>
-        </div> `
+        (fit, index) => `
+        <h4 id="ustensSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
+       `
       )
       .join("");
+      html+= `</div>`
+      html+= `<div class="col s12">
+      <h4 id="ustenSearch" class="card title m1" onclick="filterUstensils('${fits[fits.length - 1]}')">${fits[fits.length - 1]}</h4>
+   </div> `
     document.getElementById("ustensilssList").innerHTML = html;
   } else {
     document.getElementById("ustensilssList").innerHTML = "No recipe matches your criteria...";
   }
 };
+
+function removeTag(index){
+  ustensTags.splice(index,1)
+  outputHtmlContent(ustensTags)
+  if (ustensTags.length == 0){
+  document.getElementById("ustensilssList").innerHTML = "";
+}
+}
 
 ustenForm.addEventListener("submit", function (e) {
   e.preventDefault();
