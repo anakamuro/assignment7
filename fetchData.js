@@ -7,6 +7,7 @@ var deviceListOptions = `<option value="devices">Device</option>`;
 var ustensilsList = [];
 var ustensilsListOptions = `<option value="ustensils">Ustensils</option>`;
 
+
 ingredients_search_dropdown = document.getElementById(
   "ingredients_search_dropdown"
 );
@@ -62,7 +63,7 @@ function getContent(recipes) {
   let recipeList = [];
   for (var i = 0; i < recipes.length; i++) {
     var output = document.querySelector(".row");
-
+     
     let ingredient_list = [];
     for (var j = 0; j < recipes[i].ingredients.length; j++) {
       {
@@ -191,6 +192,7 @@ const searchIngredients = async (value) => {
   for (var i = 0; i < recipes.length; i++) {
     for (var j = 0; j < recipes[i].ingredients.length; j++) {
       ingredientsList.push(recipes[i].ingredients[j].ingredient);
+      console.log('ingredientsList')
     }
   }
   ingredientsList = ingredientsList.sort();

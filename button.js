@@ -55,6 +55,7 @@ ustensils_search_dropdown.addEventListener('click', function(){
     let point = document.querySelector('.fa-times-circle-o');
     let cocoClose = document.querySelector('.coco-close');
 
+    /*
 cotext.addEventListener("click", (e) => {
    coInput.style.display ="inline";
    cotext.style.display = "none"
@@ -63,6 +64,7 @@ cotext.addEventListener("click", (e) => {
 }
 )
 
+
 let ingreCancel = document.querySelector('i#ingre-cancel');
 let ingredientsSearch = document.getElementById('ingre');
 
@@ -70,4 +72,5 @@ ingreCancel.addEventListener("click", (e) => {
   ingredientsSearch.style.display = "none";
 }
 )
+*/
 
