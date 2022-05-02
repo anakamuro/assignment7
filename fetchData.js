@@ -199,6 +199,7 @@ const searchIngredients = async (value) => {
   if (binary(value, ingredientsList) != -1) {
     ingredientsTags.push(value)
     outputHtmlContent(ingredientsTags);
+    filterIngredient(value)
   } else {
     outputHtmlContent([]);
   }
@@ -237,7 +238,7 @@ const outputHtmlContent = (fits) => {
    </div>`
     document.getElementById("ingredientsList").innerHTML = html;
   } else {
-    document.getElementById("ingredientsList").innerHTML = "No recipe matches your criteria...";
+    document.getElementById("ingredientsList").innerHTML = "No ingredient matches your criteria...";
   }
 };
 
@@ -270,6 +271,7 @@ const searchDevice = async (value) => {
   if (binary(value, applianceList) != -1) {
     appliancesTags.push(value)
     outputDeviceHtmlContent(appliancesTags);
+    filterDevice(value)
   } else {
     outputDeviceHtmlContent([]);
   }
@@ -291,7 +293,7 @@ const outputDeviceHtmlContent = (fits) => {
     html = fits
      .map(
        (fit, index) => `
-        <h4 id="devicesSearch" class="card title m1" onclick="filterDevice('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
+        <h4 id="devicesSearch" class="card title m1" onclick="filterDevice('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeDeviceTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
         `
       )
       .join("")
@@ -301,11 +303,11 @@ const outputDeviceHtmlContent = (fits) => {
         </div> `
     document.getElementById("applianceList").innerHTML = html;
   } else {
-    document.getElementById("applianceList").innerHTML = "No recipe matches your criteria...";
+    document.getElementById("applianceList").innerHTML = "No Appliance matches your criteria...";
   }
 };
 
-function removeTag(index){
+function removeDeviceTag(index){
   appliancesTags.splice(index,1)
   outputDeviceHtmlContent(appliancesTags)
   if (appliancesTags.length == 0){
@@ -336,6 +338,7 @@ const searchUstensils = async (value) => {
   if (binary(value, ustensilssList) != -1) {
     ustensTags.push(value)
     outputUstenHtmlContent(ustensTags);
+    filterUstensils(value)
   } else {
     outputUstenHtmlContent([]);
   }
@@ -362,7 +365,7 @@ const outputUstenHtmlContent = (fits) => {
      html = fits
       .map(
         (fit, index) => `
-        <h4 id="ustensSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
+        <h4 id="ustensSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeUstensilsTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
        `
       )
       .join("");
@@ -372,13 +375,13 @@ const outputUstenHtmlContent = (fits) => {
    </div> `
     document.getElementById("ustensilssList").innerHTML = html;
   } else {
-    document.getElementById("ustensilssList").innerHTML = "No recipe matches your criteria...";
+    document.getElementById("ustensilssList").innerHTML = "No ustensils matches your criteria...";
   }
 };
 
-function removeTag(index){
+function removeUstensilsTag(index){
   ustensTags.splice(index,1)
-  outputHtmlContent(ustensTags)
+  outputUstenHtmlContent(ustensTags)
   if (ustensTags.length == 0){
   document.getElementById("ustensilssList").innerHTML = "";
 }
@@ -446,3 +449,22 @@ function selUstensils(){
   }
 
   console.log(linearSearch(arr, -5))
+
+  // ingredientsTags
+  // appliancesTags
+  // ustensTags
+
+   const filterAll = async() => {
+     document.getElementById("recipeList").innerHTML = '';
+
+     const res = await fetch("recipes.json");
+     const recipes = await res.json();
+     let fits = recipes.recipes.filter((recipe)=> {
+       return recipe.ustensils[0] == ustenTags[0] ||
+              recipe.ustensils[1] == ustenTags[0] ||
+              (recipe.ustensils[2]? recipe.ustensils[2] == ustensTags[0]: null) ||
+              (recipe.ustensils[3]? recipe.ustensils[3] == ustensTags[0]: null) ||
+              (recipe.ustensils[4]? recipe.ustensils[4] == ustensTags[0]: null) 
+     });
+     getContent(fits)
+   };
