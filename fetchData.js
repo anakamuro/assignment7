@@ -1,12 +1,12 @@
 var ingredientsTags = [];
-var appliancesTags = []
-var ustensTags = []
+var allTags = [];
+var appliancesTags = [];
+var ustensTags = [];
 var ingredientsList = `<option value="ingredients">Ingredients</option>`;
 var deviceList = [];
 var deviceListOptions = `<option value="devices">Device</option>`;
 var ustensilsList = [];
 var ustensilsListOptions = `<option value="ustensils">Ustensils</option>`;
-
 
 ingredients_search_dropdown = document.getElementById(
   "ingredients_search_dropdown"
@@ -27,22 +27,22 @@ fetch("recipes.json")
         ingredientsList =
           ingredientsList +
           `<option value="${recipes[i].ingredients[j].ingredient}">${recipes[i].ingredients[j].ingredient}</option>`;
-          deviceList.push(recipes[i].appliance)
+          deviceList.push(recipes[i].appliance);
 
            for(var k=0; k < (recipes[i].ustensils).length; k++){
-             ustensilsList.push(recipes[i].ustensils[k])
+             ustensilsList.push(recipes[i].ustensils[k]);
            }
           }
         }
 
        newDeviceList = removeDuplicates(deviceList);
-       for (var i=0; i < newDeviceList.length; i++){
+       for (var i = 0; i < newDeviceList.length; i++){
        deviceListOptions =
           deviceListOptions +
           `<option value="${newDeviceList[i]}">${newDeviceList[i]}</option>`;
        }
        newUstensilsList = removeDuplicates(ustensilsList);
-       for (var i=0; i < newUstensilsList.length; i++){
+       for (var i = 0; i < newUstensilsList.length; i++){
         ustensilsListOptions =
           ustensilsListOptions +
           `<option  value="${newUstensilsList[i]}" >${newUstensilsList[i]}</option>`;
@@ -60,9 +60,10 @@ fetch("recipes.json")
   });
 
 function getContent(recipes) {
+  var output = document.querySelector(".row");
+  if(recipes.length != 0){
   let recipeList = [];
   for (var i = 0; i < recipes.length; i++) {
-    var output = document.querySelector(".row");
      
     let ingredient_list = [];
     for (var j = 0; j < recipes[i].ingredients.length; j++) {
@@ -104,6 +105,9 @@ function getContent(recipes) {
    </li>`);
   }
   output.innerHTML = recipeList;
+} else {
+  output.innerHTML = "no items are found"
+}
 }
 
 const searchRecipe = async (searchBox) => {
@@ -197,9 +201,10 @@ const searchIngredients = async (value) => {
   }
   ingredientsList = ingredientsList.sort();
   if (binary(value, ingredientsList) != -1) {
-    ingredientsTags.push(value)
+    ingredientsTags.push(value);
+    allTags.push(value);
     outputHtmlContent(ingredientsTags);
-    filterIngredient(value)
+    filterAll(value);
   } else {
     outputHtmlContent([]);
   }
@@ -212,29 +217,35 @@ const filterIngredient = async (searchBox) => {
   const res = await fetch("recipes.json");
   const recipes = await res.json();
   let fits = recipes.recipes.filter((recipe) => {
-    return recipe.ingredients[0].ingredient == searchBox ||
-           recipe.ingredients[1].ingredient == searchBox ||
-           recipe.ingredients[2].ingredient == searchBox ||
-           (recipe.ingredients[3]? recipe.ingredients[3].ingredient == searchBox: null) ||
-           (recipe.ingredients[4]? recipe.ingredients[4].ingredient == searchBox: null)
+    return (
+        recipe.ingredients[0].ingredient == searchBox ||
+        recipe.ingredients[1].ingredient == searchBox ||
+        recipe.ingredients[2].ingredient == searchBox ||
+        (recipe.ingredients[3]
+          ? recipe.ingredients[3].ingredient == searchBox
+          : null) ||
+        (recipe.ingredients[4]
+          ? recipe.ingredients[4].ingredient == searchBox
+          : null)
+    );
   });
   getContent(fits);
 };
 
 const outputHtmlContent = (fits) => {
   if (fits.length > 0) {
-    var html = `<div id="ingredientMain">`
+    var html = `<div id="ingredientMain">`;
      html = fits
       .map(
         (fit, index) => `
         
-        <h4 id="ingredientsSearch" class="card title m1" onclick="filterIngredient('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeTag(${index}) class="fa fa-times-circle-o ingre-cancel" aria-hidden="true"></i></h4>
+        <h4 id="ingredientsSearch" class="card title m1" onclick="filterAll('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeTag(${index}) class="fa fa-times-circle-o ingre-cancel" aria-hidden="true"></i></h4>
        `
       )
       .join("");
      html+= `</div>`
      html+=  `<div class="col s12">
-      <h4 id="ingredientSearch" class="card title m1" onclick="filterIngredient('${fits[fits.length - 1]}')">${fits[fits.length -1]}</h4>
+      <h4 id="ingredientSearch" class="card title m1" onclick="filterAll('${fits[fits.length - 1]}')">${fits[fits.length -1]}</h4>
    </div>`
     document.getElementById("ingredientsList").innerHTML = html;
   } else {
@@ -269,47 +280,48 @@ const searchDevice = async (value) => {
   }
   applianceList = applianceList.sort();
   if (binary(value, applianceList) != -1) {
-    appliancesTags.push(value)
+    appliancesTags.push(value);
+    allTags.push(value);
     outputDeviceHtmlContent(appliancesTags);
-    filterDevice(value)
+    filterAll(value);
   } else {
     outputDeviceHtmlContent([]);
   }
-}
+};
 
 const filterDevice = async (searchBox) => {
   document.getElementById("recipeList").innerHTML = "";
   const res = await fetch("recipes.json");
   const recipes = await res.json();
   let fits = recipes.recipes.filter((recipe) => {
-    return recipe.appliance == searchBox 
+    return recipe.appliance == searchBox;
   });
   getContent(fits);
 };
 
 const outputDeviceHtmlContent = (fits) => {
   if (fits.length > 0) {
-    var html = `<div id="applianceMain">`
+    var html = `<div id="applianceMain">`;
     html = fits
      .map(
        (fit, index) => `
-        <h4 id="devicesSearch" class="card title m1" onclick="filterDevice('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeDeviceTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
+        <h4 id="devicesSearch" class="card title m1" onclick="filterAll('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeDeviceTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
         `
       )
       .join("")
-    html+= `</div>`
+    html+= `</div>`;
     html+= `<div class="col s12">
-           <h4 id="deviceSearch" class="card title m1" onclick="filterDevice('${fits[fits.length-1]}')">${fits[fits.length-1]}</h4>
-        </div> `
+           <h4 id="deviceSearch" class="card title m1" onclick="filterAll('${fits[fits.length-1]}')">${fits[fits.length-1]}</h4>
+        </div> `;
     document.getElementById("applianceList").innerHTML = html;
   } else {
     document.getElementById("applianceList").innerHTML = "No Appliance matches your criteria...";
   }
 };
 
-function removeDeviceTag(index){
-  appliancesTags.splice(index,1)
-  outputDeviceHtmlContent(appliancesTags)
+function removeDeviceTag(index) {
+  appliancesTags.splice(index,1);
+  outputDeviceHtmlContent(appliancesTags);
   if (appliancesTags.length == 0){
   document.getElementById("applianceList").innerHTML = "";
 }
@@ -336,13 +348,14 @@ const searchUstensils = async (value) => {
   }
   ustensilssList = ustensilssList.sort();
   if (binary(value, ustensilssList) != -1) {
-    ustensTags.push(value)
+    ustensTags.push(value);
+    allTags.push(value);
     outputUstenHtmlContent(ustensTags);
-    filterUstensils(value)
+    filterAll(value);
   } else {
     outputUstenHtmlContent([]);
   }
-}
+};
 
 const filterUstensils = async (searchBox) => {
   document.getElementById("recipeList").innerHTML = "";
@@ -350,29 +363,31 @@ const filterUstensils = async (searchBox) => {
   const res = await fetch("recipes.json");
   const recipes = await res.json();
   let fits = recipes.recipes.filter((recipe) => {
-    return recipe.ustensils[0] == searchBox ||
-           recipe.ustensils[1] == searchBox ||
-          (recipe.ustensils[2]? recipe.ustensils[2] == searchBox: null) ||
-          (recipe.ustensils[3]? recipe.ustensils[3] == searchBox: null) ||
-          (recipe.ustensils[4]? recipe.ustensils[4] == searchBox: null) 
+    return (
+      recipe.ustensils[0] == searchBox ||
+      recipe.ustensils[1] == searchBox ||
+      (recipe.ustensils[2] ? recipe.ustensils[2] == searchBox : null) ||
+      (recipe.ustensils[3] ? recipe.ustensils[3] == searchBox : null) ||
+      (recipe.ustensils[4] ? recipe.ustensils[4] == searchBox : null) 
+    );
   });
   getContent(fits);
 };
 
 const outputUstenHtmlContent = (fits) => {
   if (fits.length > 0) {
-    var html = `<div id="ustenMain">`
+    var html = `<div id="ustenMain">`;
      html = fits
       .map(
         (fit, index) => `
-        <h4 id="ustensSearch" class="card title m1" onclick="filterUstensils('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeUstensilsTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
+        <h4 id="ustensSearch" class="card title m1" onclick="filterAll('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeUstensilsTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
        `
       )
       .join("");
       html+= `</div>`
       html+= `<div class="col s12">
-      <h4 id="ustenSearch" class="card title m1" onclick="filterUstensils('${fits[fits.length - 1]}')">${fits[fits.length - 1]}</h4>
-   </div> `
+      <h4 id="ustenSearch" class="card title m1" onclick="filterAll('${fits[fits.length - 1]}')">${fits[fits.length - 1]}</h4>
+   </div> `;
     document.getElementById("ustensilssList").innerHTML = html;
   } else {
     document.getElementById("ustensilssList").innerHTML = "No ustensils matches your criteria...";
@@ -380,8 +395,8 @@ const outputUstenHtmlContent = (fits) => {
 };
 
 function removeUstensilsTag(index){
-  ustensTags.splice(index,1)
-  outputUstenHtmlContent(ustensTags)
+  ustensTags.splice(index,1);
+  outputUstenHtmlContent(ustensTags);
   if (ustensTags.length == 0){
   document.getElementById("ustensilssList").innerHTML = "";
 }
@@ -392,8 +407,6 @@ ustenForm.addEventListener("submit", function (e) {
   searchUstensils(ustensils_search_input.value);
   usteInput.innerHTML = " ";
 });
-
-
 
 const binary = (val, arr) => {
   let lower = 0;
@@ -437,10 +450,10 @@ function selUstensils(){
  console.log(obj)
  */
 
- let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+ let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9 ];
 
   function linearSearch(arr, elem){
-    for(let i=0; i< arr.length; i++){
+    for(let i = 0; i< arr.length; i++){
       if(arr[i] === elem){
         return i;
       }
@@ -454,17 +467,85 @@ function selUstensils(){
   // appliancesTags
   // ustensTags
 
-   const filterAll = async() => {
+   const filterAll = async (searchBox) => {
+     searchBox = allTags
      document.getElementById("recipeList").innerHTML = '';
 
      const res = await fetch("recipes.json");
      const recipes = await res.json();
-     let fits = recipes.recipes.filter((recipe)=> {
-       return recipe.ustensils[0] == ustenTags[0] ||
-              recipe.ustensils[1] == ustenTags[0] ||
-              (recipe.ustensils[2]? recipe.ustensils[2] == ustensTags[0]: null) ||
-              (recipe.ustensils[3]? recipe.ustensils[3] == ustensTags[0]: null) ||
-              (recipe.ustensils[4]? recipe.ustensils[4] == ustensTags[0]: null) 
-     });
-     getContent(fits)
-   };
+     console.log("search", searchBox)
+
+     let fits = [];
+    for (var i = 0; i < searchBox.length; i++){
+       fits.push(recipes.recipes.filter((recipe) => {
+         filtered_data =
+         (recipe.ingredients[0].ingredient == searchBox[i] ||
+         recipe.ingredients[1].ingredient == searchBox[i] ||
+         recipe.ingredients[2].ingredient == searchBox[i] ||
+        (recipe.ingredients[3]? recipe.ingredients[3].ingredient == searchBox[i]: null) ||
+        (recipe.ingredients[4]? recipe.ingredients[4].ingredient == searchBox[i]: null) )||
+        (recipe.ustensils[0] == searchBox[i] ||
+         recipe.ustensils[1] == searchBox[i] ||
+        (recipe.ustensils[2] ? recipe.ustensils[2] == searchBox[i]: null) ||
+        (recipe.ustensils[3] ? recipe.ustensils[3] == searchBox[i]: null) ||
+        (recipe.ustensils[4] ? recipe.ustensils[4] == saerchBox[i]: null)) ||
+        (recipe.appliance == searchBox[i])
+              
+        return filtered_data
+     }));
+    }
+
+    let final_array = []
+    let id_array = []
+    for(var i=0; i< fits.length; i++){
+      for(var j=0; j<fits[i].length; j++){
+        final_array.push(fits[i][j])
+      }
+    }
+
+    for(var i =0; i<final_array.length; i++){
+      id_array.push(final_array[i].id)
+    }
+  //********* */
+    console.log(id_array)
+    const set = new Set(id_array);
+    const duplicates = id_array.filter(item =>{
+      if(set.has(item)){
+        set.delete(item)
+      } else {
+        return item;
+      }
+    });
+
+    console.log("dup", duplicates)
+  //************* */
+
+  if(searchBox.length <= 1){
+    getContent(final_array)
+  }
+  else{
+    if(duplicates.length !=0){
+      let process_array = []
+  
+  
+      for(var i=0; i<duplicates.length; i++){
+        
+        for(var j=0; j<final_array.length;j++ ){
+  
+          if(parseInt(final_array[i].id) == parseInt(duplicates[j])){
+  
+            process_array.push(final_array[i])
+    
+          }
+        }
+      }
+      console.log(process_array)
+      final_array = process_array
+      getContent(final_array)
+    }
+    else{
+      getContent([])
+    }
+   
+    // ************************** 
+  }};
