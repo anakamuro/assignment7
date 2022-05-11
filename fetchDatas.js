@@ -8,6 +8,8 @@ var deviceListOptions = `<option value="devices">Device</option>`;
 var ustensilsList = [];
 var ustensilsListOptions = `<option value="ustensils">Ustensils</option>`;
 
+recipe_name = localStorage.getItem("recipe")
+document.getElementById("search").value = recipe_name
 ingredients_search_dropdown = document.getElementById(
   "ingredients_search_dropdown"
 );
@@ -23,16 +25,22 @@ fetch("recipes.json")
   .then(function (data) {
     recipes = data.recipes;
     for (var i = 0; i < recipes.length; i++) {
+      
       for (var j = 0; j < recipes[i].ingredients.length; j++) {
+        if(recipes[i].name == recipe_name){
+         
+      
         ingredientsList =
           ingredientsList +
           `<option value="${recipes[i].ingredients[j].ingredient}">${recipes[i].ingredients[j].ingredient}</option>`;
+          
           deviceList.push(recipes[i].appliance);
 
            for(var k=0; k < (recipes[i].ustensils).length; k++){
              ustensilsList.push(recipes[i].ustensils[k]);
            }
           }
+        }
         }
 
        newDeviceList = removeDuplicates(deviceList);
@@ -106,14 +114,14 @@ function getContent(recipes) {
   }
   output.innerHTML = recipeList;
 } else {
-  output.innerHTML = "No items are found"
+  output.innerHTML = "no items are found"
 }
 }
 
 const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
-   console.time();
+
   let fits = data.recipes.filter((recipe) => {
     console.log("try")
     const regex = new RegExp(`^${searchBox}`, "gi");
@@ -139,7 +147,6 @@ const searchRecipe = async (searchBox) => {
     recipeList.innerHTML = "";
   }
   outputHtml(fits);
-  console.timeEnd()
 };
 
 const outputHtml = (fits) => {
@@ -166,13 +173,16 @@ const outputHtml = (fits) => {
 };
 
 const filterRecipe = async (searchBox) => {
+
   document.getElementById("recipeList").innerHTML = "";
-  document.getElementById("search").value = searchBox;
+
   const res = await fetch("recipes.json");
   const recipes = await res.json();
   let fits = recipes.recipes.filter((recipe) => {
     return recipe.name == searchBox;
   });
+  localStorage.setItem("recipe",fits[0].name)
+  document.getElementById("search").value= fits[0].name
   getContent(fits);
 };
 
@@ -201,6 +211,7 @@ const searchIngredients = async (value) => {
     }
   }
   ingredientsList = ingredientsList.sort();
+
   if (binary(value, ingredientsList) != -1) {
     ingredientsTags.push(value);
     allTags.push(value);
@@ -219,6 +230,7 @@ const filterIngredient = async (searchBox) => {
   const recipes = await res.json();
   let fits = recipes.recipes.filter((recipe) => {
     return (
+
         recipe.ingredients[0].ingredient == searchBox ||
         recipe.ingredients[1].ingredient == searchBox ||
         recipe.ingredients[2].ingredient == searchBox ||
@@ -255,10 +267,9 @@ const outputHtmlContent = (fits) => {
 };
 
 function removeTag(index){
-  allTags.splice(index, 1)
   ingredientsTags.splice(index, 1)
-  outputHtmlContent(allTags)
-  if(ingredientsTags.length == 0 | allTags.length == 0){
+  outputHtmlContent(ingredientsTags)
+  if(ingredientsTags.length == 0){
     document.getElementById("ingredientsList").innerHTML = "";
   }
 }
@@ -323,8 +334,7 @@ const outputDeviceHtmlContent = (fits) => {
 
 function removeDeviceTag(index) {
   appliancesTags.splice(index,1);
-  allTags.splice(index, 1)
-  outputDeviceHtmlContent(allTags);
+  outputDeviceHtmlContent(appliancesTags);
   if (appliancesTags.length == 0){
   document.getElementById("applianceList").innerHTML = "";
 }
@@ -399,8 +409,7 @@ const outputUstenHtmlContent = (fits) => {
 
 function removeUstensilsTag(index){
   ustensTags.splice(index,1);
-  allTags.splice(index, 1);
-  outputUstenHtmlContent(allTags);
+  outputUstenHtmlContent(ustensTags);
   if (ustensTags.length == 0){
   document.getElementById("ustensilssList").innerHTML = "";
 }
@@ -477,7 +486,7 @@ function selUstensils(){
 
      const res = await fetch("recipes.json");
      const recipes = await res.json();
-     console.log("search", searchBox)
+
 
      let fits = [];
     for (var i = 0; i < searchBox.length; i++){
