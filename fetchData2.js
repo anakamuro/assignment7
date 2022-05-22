@@ -37,17 +37,16 @@ fetch("recipes.json")
               ustensilsList.push(recipes[i].ustensils[k]);
             }
           }
-        }
-      else{
-        ingredientsList =
-        ingredientsList +
-        `<option value="${recipes[i].ingredients[j].ingredient}">${recipes[i].ingredients[j].ingredient}</option>`;
+        } else {
+          ingredientsList =
+            ingredientsList +
+            `<option value="${recipes[i].ingredients[j].ingredient}">${recipes[i].ingredients[j].ingredient}</option>`;
 
-      deviceList.push(recipes[i].appliance);
-      for (var k = 0; k < recipes[i].ustensils.length; k++) {
-        ustensilsList.push(recipes[i].ustensils[k]);
-      }
-      }
+          deviceList.push(recipes[i].appliance);
+          for (var k = 0; k < recipes[i].ustensils.length; k++) {
+            ustensilsList.push(recipes[i].ustensils[k]);
+          }
+        }
       }
     }
 
@@ -124,73 +123,52 @@ function getContent(recipes) {
     output.innerHTML = "no items are found";
   }
 }
-
+// ***********************************************************************
 const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
 
-  // let fits = data.recipes.filter((recipe) => {
-  //   console.log("try");
-  //   const regex = new RegExp(`^${searchBox}`, "gi");
-  //   return (
-  //     recipe.name.match(regex) ||
-  //     recipe.description.match(regex) ||
-  //     recipe.ingredients[0].ingredient.match(regex) ||
-  //     recipe.ingredients[1].ingredient.match(regex) ||
-  //     (recipe.ingredients[2]
-  //       ? recipe.ingredients[2].ingredient.match(regex)
-  //       : null) ||
-  //     (recipe.ingredients[3]
-  //       ? recipe.ingredients[3].ingredient.match(regex)
-  //       : null) ||
-  //     (recipe.ingredients[4]
-  //       ? recipe.ingredients[4].ingredient.match(regex)
-  //       : null)
-  //   );
-  // });
-
+  var recipeValue = "";
+  // Output name from binary search
+  if (binarySearchNameDescription(searchBox, data.recipes) == -1) {
+    recipeValue = null;
+  } else {
+    recipeValue = data.recipes[binarySearchNameDescription(searchBox, data.recipes)];
+  }
 
   let fits = data.recipes.filter((recipe) => {
-    console.log("try");
-
-
-    var ingredientValue = ""
-    const regex = new RegExp(`^${searchBox}`, "gi");
- 
-    if (binarySearch(searchBox,recipe.ingredients) == -1){
-      ingredientValue = null
+    var ingredientValue = "";
+    if (binarySearchIngredient(searchBox, recipe.ingredients) == -1) {
+      ingredientValue = null;
+    } else {
+      ingredientValue =
+        recipe.ingredients[binarySearchIngredient(searchBox, recipe.ingredients)]
+          .ingredient;
     }
-    else {
-      ingredientValue = recipe.ingredients[binarySearch(searchBox,recipe.ingredients)].ingredient
-    }
-
-    return (
-      recipe.name.match(regex) ||
-      recipe.description.match(regex) ||
-      ingredientValue    
-    );
+    return ingredientValue;
   });
 
   if (searchBox.length === 0) {
     fits = [];
     recipeList.innerHTML = "";
   }
+  console.log(fits);
+  if (recipeValue != null) {
+    fits.push(recipeValue);
+  }
   outputHtml(fits);
 };
 
-const binarySearch = (val, arr) => {
- 
+const binarySearchIngredient = (val, arr) => {
+  const regex = new RegExp(`^${val}`, "gi");
   let lower = 0;
-  let upper = arr.length -1;
+  let upper = arr.length - 1;
 
   while (lower <= upper) {
-    console.log("try");
+    // console.log("try");
     const middle = lower + Math.floor((upper - lower) / 2);
-    
 
-    if (val === arr[middle].ingredient) {
-      console.log(arr, arr.length-1)
-      // console.log("index",arr[middle].ingredient)
+    if (arr[middle].ingredient.match(regex)) {
       return middle;
     }
     if (val < arr[middle]) {
@@ -202,6 +180,28 @@ const binarySearch = (val, arr) => {
 
   return -1;
 };
+
+const binarySearchNameDescription = (val, arr) => {
+  const regex = new RegExp(`^${val}`, "gi");
+
+  let lower = 0;
+  let upper = arr.length - 1;
+
+  while (lower <= upper) {
+    // console.log("try");
+    const middle = lower + Math.floor((upper - lower) / 2);
+    if (arr[middle].name.match(regex) || arr[middle].description.match(regex)) {
+      return middle;
+    }
+    if (val < arr[middle]) {
+      upper = middle - 1;
+    } else {
+      lower = middle + 1;
+    }
+  }
+  return -1;
+};
+// *****************************************************************
 const outputHtml = (fits) => {
   if (fits.length > 0) {
     const html = fits
@@ -308,9 +308,7 @@ const outputHtmlContent = (fits) => {
       .join("");
     html += `</div>`;
     html += `<div class="col s12">
-      <h4 id="ingredientSearch" class="card title m1" onclick="filterAll('${
-        fits[fits.length - 1]
-      }')">${fits[fits.length - 1]}</h4>
+  
    </div>`;
     document.getElementById("ingredientsList").innerHTML = html;
   } else {
@@ -376,11 +374,7 @@ const outputDeviceHtmlContent = (fits) => {
       )
       .join("");
     html += `</div>`;
-    html += `<div class="col s12">
-           <h4 id="deviceSearch" class="card title m1" onclick="filterAll('${
-             fits[fits.length - 1]
-           }')">${fits[fits.length - 1]}</h4>
-        </div> `;
+
     document.getElementById("applianceList").innerHTML = html;
   } else {
     document.getElementById("applianceList").innerHTML =
@@ -454,11 +448,7 @@ const outputUstenHtmlContent = (fits) => {
       )
       .join("");
     html += `</div>`;
-    html += `<div class="col s12">
-      <h4 id="ustenSearch" class="card title m1" onclick="filterAll('${
-        fits[fits.length - 1]
-      }')">${fits[fits.length - 1]}</h4>
-   </div> `;
+
     document.getElementById("ustensilssList").innerHTML = html;
   } else {
     document.getElementById("ustensilssList").innerHTML =
@@ -489,7 +479,7 @@ const binary = (val, arr) => {
     const middle = lower + Math.floor((upper - lower) / 2);
 
     if (val === arr[middle]) {
-      console.log(arr[middle])
+      console.log(arr[middle]);
       return middle;
     }
     if (val < arr[middle]) {
@@ -627,38 +617,38 @@ const filterAll = async (searchBox) => {
   }
 };
 
-function searchByName(name, id) {
-  let start = 0;
-  let end = id.length - 1;
+// function searchByName(name, id) {
+//   let start = 0;
+//   let end = id.length - 1;
 
-  while (start <= end) {
-    let middle = Math.floor((start + end) / 2);
+//   while (start <= end) {
+//     let middle = Math.floor((start + end) / 2);
 
-    if (id[middle] === name) {
-      return middle;
-    } else if (id[middle] < name) {
-      start = middle + 1;
-    } else {
-      end = middle - 1;
-    }
-  }
-  return -1;
-}
+//     if (id[middle] === name) {
+//       return middle;
+//     } else if (id[middle] < name) {
+//       start = middle + 1;
+//     } else {
+//       end = middle - 1;
+//     }
+//   }
+//   return -1;
+// }
 
-function searchByDescription(description, id) {
-  let start = 0;
-  let end = id.length - 1;
+// function searchByDescription(description, id) {
+//   let start = 0;
+//   let end = id.length - 1;
 
-  while (start <= end) {
-    let middle = Math.floor((start + end) / 2);
+//   while (start <= end) {
+//     let middle = Math.floor((start + end) / 2);
 
-    if (id[middle] === description) {
-      return middle;
-    } else if (id[middle] < description) {
-      start = middle + 1;
-    } else {
-      end = middle - 1;
-    }
-  }
-  return -1;
-}
+//     if (id[middle] === description) {
+//       return middle;
+//     } else if (id[middle] < description) {
+//       start = middle + 1;
+//     } else {
+//       end = middle - 1;
+//     }
+//   }
+//   return -1;
+// }

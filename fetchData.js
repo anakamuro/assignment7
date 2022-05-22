@@ -8,6 +8,8 @@ var deviceListOptions = `<option value="devices">Device</option>`;
 var ustensilsList = [];
 var ustensilsListOptions = `<option value="ustensils">Ustensils</option>`;
 
+recipe_name = localStorage.getItem("recipe");
+document.getElementById("search").value = recipe_name;
 ingredients_search_dropdown = document.getElementById(
   "ingredients_search_dropdown"
 );
@@ -24,30 +26,44 @@ fetch("recipes.json")
     recipes = data.recipes;
     for (var i = 0; i < recipes.length; i++) {
       for (var j = 0; j < recipes[i].ingredients.length; j++) {
-        ingredientsList =
-          ingredientsList +
-          `<option value="${recipes[i].ingredients[j].ingredient}">${recipes[i].ingredients[j].ingredient}</option>`;
-          deviceList.push(recipes[i].appliance);
+        if (recipe_name != null) {
+          if (recipes[i].name == recipe_name) {
+            ingredientsList =
+              ingredientsList +
+              `<option value="${recipes[i].ingredients[j].ingredient}">${recipes[i].ingredients[j].ingredient}</option>`;
 
-           for(var k=0; k < (recipes[i].ustensils).length; k++){
-             ustensilsList.push(recipes[i].ustensils[k]);
-           }
+            deviceList.push(recipes[i].appliance);
+            for (var k = 0; k < recipes[i].ustensils.length; k++) {
+              ustensilsList.push(recipes[i].ustensils[k]);
+            }
           }
         }
+      else{
+        ingredientsList =
+        ingredientsList +
+        `<option value="${recipes[i].ingredients[j].ingredient}">${recipes[i].ingredients[j].ingredient}</option>`;
 
-       newDeviceList = removeDuplicates(deviceList);
-       for (var i = 0; i < newDeviceList.length; i++){
-       deviceListOptions =
-          deviceListOptions +
-          `<option value="${newDeviceList[i]}">${newDeviceList[i]}</option>`;
-       }
-       newUstensilsList = removeDuplicates(ustensilsList);
-       for (var i = 0; i < newUstensilsList.length; i++){
-        ustensilsListOptions =
-          ustensilsListOptions +
-          `<option  value="${newUstensilsList[i]}" >${newUstensilsList[i]}</option>`;
+      deviceList.push(recipes[i].appliance);
+      for (var k = 0; k < recipes[i].ustensils.length; k++) {
+        ustensilsList.push(recipes[i].ustensils[k]);
       }
-    
+      }
+      }
+    }
+
+    newDeviceList = removeDuplicates(deviceList);
+    for (var i = 0; i < newDeviceList.length; i++) {
+      deviceListOptions =
+        deviceListOptions +
+        `<option value="${newDeviceList[i]}">${newDeviceList[i]}</option>`;
+    }
+    newUstensilsList = removeDuplicates(ustensilsList);
+    for (var i = 0; i < newUstensilsList.length; i++) {
+      ustensilsListOptions =
+        ustensilsListOptions +
+        `<option  value="${newUstensilsList[i]}" >${newUstensilsList[i]}</option>`;
+    }
+
     ingredients_search_dropdown.innerHTML =
       '<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">' +
       ingredientsList;
@@ -61,26 +77,25 @@ fetch("recipes.json")
 
 function getContent(recipes) {
   var output = document.querySelector(".row");
-  if(recipes.length != 0){
-  let recipeList = [];
-  for (var i = 0; i < recipes.length; i++) {
-     
-    let ingredient_list = [];
-    for (var j = 0; j < recipes[i].ingredients.length; j++) {
-      {
-        ingredient_list.push(`<strong>${
-          recipes[i].ingredients[j].ingredient
-        }:</strong>
+  if (recipes.length != 0) {
+    let recipeList = [];
+    for (var i = 0; i < recipes.length; i++) {
+      let ingredient_list = [];
+      for (var j = 0; j < recipes[i].ingredients.length; j++) {
+        {
+          ingredient_list.push(`<strong>${
+            recipes[i].ingredients[j].ingredient
+          }:</strong>
        ${
          recipes[i].ingredients[j].quantity
            ? recipes[i].ingredients[j].quantity
            : ""
        } ${
-          recipes[i].ingredients[j].unit ? recipes[i].ingredients[j].unit : ""
-        } <br>`);
+            recipes[i].ingredients[j].unit ? recipes[i].ingredients[j].unit : ""
+          } <br>`);
+        }
       }
-    }
-    recipeList.push(`<li>
+      recipeList.push(`<li>
    <div class="col dot">
        <div class="card row mr-4 mb-4">
          <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg"
@@ -103,19 +118,19 @@ function getContent(recipes) {
        </div>
      </div>
    </li>`);
+    }
+    output.innerHTML = recipeList;
+  } else {
+    output.innerHTML = "no items are found";
   }
-  output.innerHTML = recipeList;
-} else {
-  output.innerHTML = "No items are found"
-}
 }
 
 const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
-   console.time();
+  console.time();
   let fits = data.recipes.filter((recipe) => {
-    console.log("try")
+    console.log("try");
     const regex = new RegExp(`^${searchBox}`, "gi");
     return (
       recipe.name.match(regex) ||
@@ -167,12 +182,14 @@ const outputHtml = (fits) => {
 
 const filterRecipe = async (searchBox) => {
   document.getElementById("recipeList").innerHTML = "";
-  document.getElementById("search").value = searchBox;
+
   const res = await fetch("recipes.json");
   const recipes = await res.json();
   let fits = recipes.recipes.filter((recipe) => {
     return recipe.name == searchBox;
   });
+  localStorage.setItem("recipe", fits[0].name);
+  document.getElementById("search").value = fits[0].name;
   getContent(fits);
 };
 
@@ -197,10 +214,11 @@ const searchIngredients = async (value) => {
   for (var i = 0; i < recipes.length; i++) {
     for (var j = 0; j < recipes[i].ingredients.length; j++) {
       ingredientsList.push(recipes[i].ingredients[j].ingredient);
-      console.log('ingredientsList')
+      console.log("ingredientsList");
     }
   }
   ingredientsList = ingredientsList.sort();
+
   if (binary(value, ingredientsList) != -1) {
     ingredientsTags.push(value);
     allTags.push(value);
@@ -211,7 +229,6 @@ const searchIngredients = async (value) => {
   }
 };
 
-
 const filterIngredient = async (searchBox) => {
   document.getElementById("recipeList").innerHTML = "";
 
@@ -219,15 +236,15 @@ const filterIngredient = async (searchBox) => {
   const recipes = await res.json();
   let fits = recipes.recipes.filter((recipe) => {
     return (
-        recipe.ingredients[0].ingredient == searchBox ||
-        recipe.ingredients[1].ingredient == searchBox ||
-        recipe.ingredients[2].ingredient == searchBox ||
-        (recipe.ingredients[3]
-          ? recipe.ingredients[3].ingredient == searchBox
-          : null) ||
-        (recipe.ingredients[4]
-          ? recipe.ingredients[4].ingredient == searchBox
-          : null)
+      recipe.ingredients[0].ingredient == searchBox ||
+      recipe.ingredients[1].ingredient == searchBox ||
+      recipe.ingredients[2].ingredient == searchBox ||
+      (recipe.ingredients[3]
+        ? recipe.ingredients[3].ingredient == searchBox
+        : null) ||
+      (recipe.ingredients[4]
+        ? recipe.ingredients[4].ingredient == searchBox
+        : null)
     );
   });
   getContent(fits);
@@ -236,7 +253,7 @@ const filterIngredient = async (searchBox) => {
 const outputHtmlContent = (fits) => {
   if (fits.length > 0) {
     var html = `<div id="ingredientMain">`;
-     html = fits
+    html = fits
       .map(
         (fit, index) => `
         
@@ -244,21 +261,20 @@ const outputHtmlContent = (fits) => {
        `
       )
       .join("");
-     html+= `</div>`
-     html+=  `<div class="col s12">
-      <h4 id="ingredientSearch" class="card title m1" onclick="filterAll('${fits[fits.length - 1]}')">${fits[fits.length -1]}</h4>
-   </div>`
+    html += `</div>`;
+    html += `<div class="col s12">
+   </div>`;
     document.getElementById("ingredientsList").innerHTML = html;
   } else {
-    document.getElementById("ingredientsList").innerHTML = "No ingredient matches your criteria...";
+    document.getElementById("ingredientsList").innerHTML =
+      "No ingredient matches your criteria...";
   }
 };
 
-function removeTag(index){
-  allTags.splice(index, 1)
-  ingredientsTags.splice(index, 1)
-  outputHtmlContent(allTags)
-  if(ingredientsTags.length == 0 | allTags.length == 0){
+function removeTag(index) {
+  ingredientsTags.splice(index, 1);
+  outputHtmlContent(ingredientsTags);
+  if (ingredientsTags.length == 0) {
     document.getElementById("ingredientsList").innerHTML = "";
   }
 }
@@ -278,7 +294,7 @@ const searchDevice = async (value) => {
   applianceList = [];
   recipes = data.recipes;
   for (var i = 0; i < recipes.length; i++) {
-      applianceList.push(recipes[i].appliance);
+    applianceList.push(recipes[i].appliance);
   }
   applianceList = applianceList.sort();
   if (binary(value, applianceList) != -1) {
@@ -305,29 +321,28 @@ const outputDeviceHtmlContent = (fits) => {
   if (fits.length > 0) {
     var html = `<div id="applianceMain">`;
     html = fits
-     .map(
-       (fit, index) => `
+      .map(
+        (fit, index) => `
         <h4 id="devicesSearch" class="card title m1" onclick="filterAll('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeDeviceTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
         `
       )
-      .join("")
-    html+= `</div>`;
-    html+= `<div class="col s12">
-           <h4 id="deviceSearch" class="card title m1" onclick="filterAll('${fits[fits.length-1]}')">${fits[fits.length-1]}</h4>
+      .join("");
+    html += `</div>`;
+    html += `<div class="col s12">
         </div> `;
     document.getElementById("applianceList").innerHTML = html;
   } else {
-    document.getElementById("applianceList").innerHTML = "No Appliance matches your criteria...";
+    document.getElementById("applianceList").innerHTML =
+      "No Appliance matches your criteria...";
   }
 };
 
 function removeDeviceTag(index) {
-  appliancesTags.splice(index,1);
-  allTags.splice(index, 1)
-  outputDeviceHtmlContent(allTags);
-  if (appliancesTags.length == 0){
-  document.getElementById("applianceList").innerHTML = "";
-}
+  appliancesTags.splice(index, 1);
+  outputDeviceHtmlContent(appliancesTags);
+  if (appliancesTags.length == 0) {
+    document.getElementById("applianceList").innerHTML = "";
+  }
 }
 
 deviceForm.addEventListener("submit", function (e) {
@@ -371,7 +386,7 @@ const filterUstensils = async (searchBox) => {
       recipe.ustensils[1] == searchBox ||
       (recipe.ustensils[2] ? recipe.ustensils[2] == searchBox : null) ||
       (recipe.ustensils[3] ? recipe.ustensils[3] == searchBox : null) ||
-      (recipe.ustensils[4] ? recipe.ustensils[4] == searchBox : null) 
+      (recipe.ustensils[4] ? recipe.ustensils[4] == searchBox : null)
     );
   });
   getContent(fits);
@@ -380,30 +395,29 @@ const filterUstensils = async (searchBox) => {
 const outputUstenHtmlContent = (fits) => {
   if (fits.length > 0) {
     var html = `<div id="ustenMain">`;
-     html = fits
+    html = fits
       .map(
         (fit, index) => `
         <h4 id="ustensSearch" class="card title m1" onclick="filterAll('${fit}')">${fit}&nbsp;<i id="ingre-cancel" onclick=removeUstensilsTag(${index}) class="fa fa-times-circle-o" aria-hidden="true"></i></h4>
        `
       )
       .join("");
-      html+= `</div>`
-      html+= `<div class="col s12">
-      <h4 id="ustenSearch" class="card title m1" onclick="filterAll('${fits[fits.length - 1]}')">${fits[fits.length - 1]}</h4>
+    html += `</div>`;
+    html += `<div class="col s12">
    </div> `;
     document.getElementById("ustensilssList").innerHTML = html;
   } else {
-    document.getElementById("ustensilssList").innerHTML = "No ustensils matches your criteria...";
+    document.getElementById("ustensilssList").innerHTML =
+      "No ustensils matches your criteria...";
   }
 };
 
-function removeUstensilsTag(index){
-  ustensTags.splice(index,1);
-  allTags.splice(index, 1);
-  outputUstenHtmlContent(allTags);
-  if (ustensTags.length == 0){
-  document.getElementById("ustensilssList").innerHTML = "";
-}
+function removeUstensilsTag(index) {
+  ustensTags.splice(index, 1);
+  outputUstenHtmlContent(ustensTags);
+  if (ustensTags.length == 0) {
+    document.getElementById("ustensilssList").innerHTML = "";
+  }
 }
 
 ustenForm.addEventListener("submit", function (e) {
@@ -433,123 +447,127 @@ const binary = (val, arr) => {
 };
 // console.log(binary('Brown Sugar', 'searchedValue'))
 
-function removeDuplicates(arr){
-  return arr.filter((item, index)=> arr.indexOf(item) === index);
+function removeDuplicates(arr) {
+  return arr.filter((item, index) => arr.indexOf(item) === index);
 }
 
-function selIngredient(){
-  var ingredientsDropdown = document.getElementById('ingredients_search_dropdown');
-  document.getElementById("ingredients_search_input").value = ingredientsDropdown.options[ingredientsDropdown.selectedIndex].text;
+function selIngredient() {
+  var ingredientsDropdown = document.getElementById(
+    "ingredients_search_dropdown"
+  );
+  document.getElementById("ingredients_search_input").value =
+    ingredientsDropdown.options[ingredientsDropdown.selectedIndex].text;
 }
-function selDevice(){
-  var deviceDropdown = document.getElementById('device_search_dropdown');
-  document.getElementById("device_search_input").value = deviceDropdown.options[deviceDropdown.selectedIndex].text;
+function selDevice() {
+  var deviceDropdown = document.getElementById("device_search_dropdown");
+  document.getElementById("device_search_input").value =
+    deviceDropdown.options[deviceDropdown.selectedIndex].text;
 }
-function selUstensils(){
-  var ustenDropdown = document.getElementById('ustensils_search_dropdown');
-  document.getElementById("ustensils_search_input").value = ustenDropdown.options[ustenDropdown.selectedIndex].text;
+function selUstensils() {
+  var ustenDropdown = document.getElementById("ustensils_search_dropdown");
+  document.getElementById("ustensils_search_input").value =
+    ustenDropdown.options[ustenDropdown.selectedIndex].text;
 }
 /*
  const obj = JSON.parse('./recipes.json');
  console.log(obj)
  */
 
- let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9 ];
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  function linearSearch(arr, elem){
-    for(let i = 0; i< arr.length; i++){
-      if(arr[i] === elem){
-        return i;
-      }
+function linearSearch(arr, elem) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === elem) {
+      return i;
     }
-    return -1;
+  }
+  return -1;
+}
+
+console.log(linearSearch(arr, -5));
+
+// ingredientsTags
+// appliancesTags
+// ustensTags
+
+const filterAll = async (searchBox) => {
+  searchBox = allTags;
+  document.getElementById("recipeList").innerHTML = "";
+
+  const res = await fetch("recipes.json");
+  const recipes = await res.json();
+
+  let fits = [];
+  for (var i = 0; i < searchBox.length; i++) {
+    fits.push(
+      recipes.recipes.filter((recipe) => {
+        filtered_data =
+          recipe.ingredients[0].ingredient == searchBox[i] ||
+          recipe.ingredients[1].ingredient == searchBox[i] ||
+          recipe.ingredients[2].ingredient == searchBox[i] ||
+          (recipe.ingredients[3]
+            ? recipe.ingredients[3].ingredient == searchBox[i]
+            : null) ||
+          (recipe.ingredients[4]
+            ? recipe.ingredients[4].ingredient == searchBox[i]
+            : null) ||
+          recipe.ustensils[0] == searchBox[i] ||
+          recipe.ustensils[1] == searchBox[i] ||
+          (recipe.ustensils[2] ? recipe.ustensils[2] == searchBox[i] : null) ||
+          (recipe.ustensils[3] ? recipe.ustensils[3] == searchBox[i] : null) ||
+          (recipe.ustensils[4] ? recipe.ustensils[4] == saerchBox[i] : null) ||
+          recipe.appliance == searchBox[i];
+
+        return filtered_data;
+      })
+    );
   }
 
-  console.log(linearSearch(arr, -5))
-
-  // ingredientsTags
-  // appliancesTags
-  // ustensTags
-
-   const filterAll = async (searchBox) => {
-     searchBox = allTags
-     document.getElementById("recipeList").innerHTML = '';
-
-     const res = await fetch("recipes.json");
-     const recipes = await res.json();
-     console.log("search", searchBox)
-
-     let fits = [];
-    for (var i = 0; i < searchBox.length; i++){
-       fits.push(recipes.recipes.filter((recipe) => {
-         filtered_data =
-         (recipe.ingredients[0].ingredient == searchBox[i] ||
-         recipe.ingredients[1].ingredient == searchBox[i] ||
-         recipe.ingredients[2].ingredient == searchBox[i] ||
-        (recipe.ingredients[3]? recipe.ingredients[3].ingredient == searchBox[i]: null) ||
-        (recipe.ingredients[4]? recipe.ingredients[4].ingredient == searchBox[i]: null) )||
-        (recipe.ustensils[0] == searchBox[i] ||
-         recipe.ustensils[1] == searchBox[i] ||
-        (recipe.ustensils[2] ? recipe.ustensils[2] == searchBox[i]: null) ||
-        (recipe.ustensils[3] ? recipe.ustensils[3] == searchBox[i]: null) ||
-        (recipe.ustensils[4] ? recipe.ustensils[4] == saerchBox[i]: null)) ||
-        (recipe.appliance == searchBox[i])
-              
-        return filtered_data
-     }));
+  let final_array = [];
+  let id_array = [];
+  for (var i = 0; i < fits.length; i++) {
+    for (var j = 0; j < fits[i].length; j++) {
+      final_array.push(fits[i][j]);
     }
+  }
 
-    let final_array = []
-    let id_array = []
-    for(var i=0; i< fits.length; i++){
-      for(var j=0; j<fits[i].length; j++){
-        final_array.push(fits[i][j])
-      }
-    }
-
-    for(var i =0; i<final_array.length; i++){
-      id_array.push(final_array[i].id)
-    }
+  for (var i = 0; i < final_array.length; i++) {
+    id_array.push(final_array[i].id);
+  }
   //********* */
-    console.log(id_array)
-    const set = new Set(id_array);
-    const duplicates = id_array.filter(item =>{
-      if(set.has(item)){
-        set.delete(item)
-      } else {
-        return item;
-      }
-    });
+  console.log(id_array);
+  const set = new Set(id_array);
+  const duplicates = id_array.filter((item) => {
+    if (set.has(item)) {
+      set.delete(item);
+    } else {
+      return item;
+    }
+  });
 
-    console.log("dup", duplicates)
+  console.log("dup", duplicates);
   //************* */
 
-  if(searchBox.length <= 1){
-    getContent(final_array)
-  }
-  else{
-    if(duplicates.length !=0){
-      let process_array = []
-  
-  
-      for(var i=0; i<duplicates.length; i++){
-        
-        for(var j=0; j<final_array.length;j++ ){
-  
-          if(parseInt(final_array[i].id) == parseInt(duplicates[j])){
-  
-            process_array.push(final_array[i])
-    
+  if (searchBox.length <= 1) {
+    getContent(final_array);
+  } else {
+    if (duplicates.length != 0) {
+      let process_array = [];
+
+      for (var i = 0; i < duplicates.length; i++) {
+        for (var j = 0; j < final_array.length; j++) {
+          if (parseInt(final_array[i].id) == parseInt(duplicates[j])) {
+            process_array.push(final_array[i]);
           }
         }
       }
-      console.log(process_array)
-      final_array = process_array
-      getContent(final_array)
+      console.log(process_array);
+      final_array = process_array;
+      getContent(final_array);
+    } else {
+      getContent([]);
     }
-    else{
-      getContent([])
-    }
-   
-    // ************************** 
-  }};
+
+    // **************************
+  }
+};

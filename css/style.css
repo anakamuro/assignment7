@@ -59,7 +59,7 @@
      font-size: 30px;
  }
  .fa-angle-up {
-    font-size: 30px;
+    font-size: 200px;
     position: relative;
     top: 0px;
     left: 0px;
@@ -134,8 +134,8 @@
     color: white;
     position: relative;
     height: 40px;
-    left: -200px;
-    top: -145px;
+    left: -180px;
+    top: -115px;
     text-align: center;
     display: inline;
     cursor: pointer;
@@ -159,7 +159,7 @@
     position: relative;
     height: 40px;
     left: -70px;
-    top: -190px;
+    top: -140px;
     text-align: center;
     display: inline;
     cursor: pointer;
@@ -184,7 +184,7 @@
     position: relative;
     height: 40px;
     left: 0px;
-    top: -190px;
+    top: -140px;
     text-align: center;
     display: inline;
     cursor: pointer;
@@ -204,22 +204,27 @@
 .fa-angle-up.ingre {
     position: relative;
     color: white;
-    top: 0px;
-    left: 0px;
-    display: none;
+    top: -40px;
+    left: -23px;
+    width: 30px;
+    height: 30px;
 }
 .fa-angle-up.device {
     position: relative;
     color: white;
-    top: 0px;
-    left: 0px;
+    top: -100px;
+    left: 160px;
+    width: 30px;
+    height: 30px;
     display: none;
 }
 .fa-angle-up.uste {
     position: relative;
+    width: 30px;
+    height: 30px;
     color: white;
-    top: 0px;
-    left: 0px;
+    top: -100px;
+    left: 200px;
     display: none;
 }
 .drop {
