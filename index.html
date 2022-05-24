@@ -32,19 +32,19 @@
         <Select type="button" id="ingredients_search_dropdown" onChange="searchIngredients(this.value);selIngredient()" class="btn btn-primary btn2"><i id="angle" class="fa fa-angle-down" aria-hidden="true"></i></Select>
         
         <form id="ingredientsForm">
-        <input type="search" placeholder="Search an ingredient" id="ingredients_search_input" class="btn btn-primary btn2"><i class="fa fa-angle-up ingre"></i></input>
+        <input type="search" placeholder="Search an ingredient" id="ingredients_search_input" class="btn btn-primary btn2"><i onclick="drop_change()" class="fa fa-angle-up ingre"></i></input>
         <div id="ingredientsList"></div>
       </form>
 
 
         <form id="deviceForm">
         <Select type="button" id="device_search_dropdown" onChange="searchDevice(this.value);selDevice()" class="device text-center btn2"><i class="fa fa-angle-down" aria-hidden="true"></i></Select>
-        <input type="search" placeholder="Search a device" id="device_search_input" class="btn btn-primary btn2"><i class="fa fa-angle-up device" aria-hidden="true"></i></input>
+        <input type="search" placeholder="Search a device" id="device_search_input" class="btn btn-primary btn2"><i onclick="drop_change()" class="fa fa-angle-up device" aria-hidden="true"></i></input>
         <div id="applianceList"></div>
         </form>
         <form id="ustenForm">
         <Select type="button" id="ustensils_search_dropdown" onChange="searchUstensils(this.value);selUstensils()" class="btn btn-danger btn2"><i class="fa fa-angle-down" aria-hidden="true"></i></Select>
-        <input type="search" placeholder="Search an ustensils" id="ustensils_search_input" class="btn btn-primary btn2"><i class="fa fa-angle-up uste" aria-hidden="true"></i></input>
+        <input type="search" placeholder="Search an ustensils" id="ustensils_search_input" class="btn btn-primary btn2"><i onclick="drop_change()" class="fa fa-angle-up uste" aria-hidden="true"></i></input>
         <div id="ustensilssList"></div>
         </form>
       </div>
