@@ -58,7 +58,6 @@
  .fa-angle-down {
      font-size: 30px;
  }
- /*
  .fa-angle-up {
     font-size: 200px;
     position: relative;
@@ -135,15 +134,11 @@
     color: white;
     position: relative;
     height: 40px;
-   
+    left: -180px;
+    top: -1200px;
     text-align: center;
     display: inline;
     cursor: pointer;
-}
-h4#ingredientsSearch.card.title.m1 {
-    position: relative;
-    top: -170px;
-    left: -170px;
 }
 #ingredientMain {
     display: flex;
@@ -164,7 +159,7 @@ h4#ingredientsSearch.card.title.m1 {
     position: relative;
     height: 40px;
     left: -70px;
-    top: -220px;
+    top: -200px;
     text-align: center;
     display: inline;
     cursor: pointer;
@@ -189,7 +184,7 @@ h4#ingredientsSearch.card.title.m1 {
     position: relative;
     height: 40px;
     left: 0px;
-    top: -220px;
+    top: -140px;
     text-align: center;
     display: inline;
     cursor: pointer;
@@ -201,6 +196,7 @@ h4#ingredientsSearch.card.title.m1 {
     border-radius: 0%;
     color: white;
     background-color: #0d6efd;
+    max-height: 100px;
 }
 
 #angle {
@@ -218,19 +214,18 @@ h4#ingredientsSearch.card.title.m1 {
     position: relative;
     color: white;
     top: -100px;
-    left: 165px;
-    width: 20px;
-    height: 20px;
+    left: 160px;
+    width: 30px;
+    height: 30px;
     display: none;
 }
 .fa-angle-up.uste {
     position: relative;
-    width: 20px;
-    height: 20px;
-    background-color: #bb2d3b;
+    width: 30px;
+    height: 30px;
     color: white;
     top: -100px;
-    left: 230px;
+    left: 200px;
     display: none;
 }
 .drop {
@@ -243,7 +238,6 @@ Select#ingredients_search_dropdown.btn.btn-primary.btn2::placeholder {
 }
 Select#ingredients_search_dropdown.btn.btn-primary.btn2{
     background-color: #0d6efd;
-    columns: 4 200px;
 }
 /*
 Select#ingredients_search_dropdown.btn.btn-primary.btn2, Select#device_search_dropdown.btn.btn-primary.btn2,
@@ -256,13 +250,11 @@ Select#ustensils_search_dropdown.btn.btn-primary.btn2 {
     background-color: #6AD6A5;
     position: relative;
     top: 0px;
-    left: 0px;
 }
 #ustensils_search_dropdown {
     background-color: #dc3545;
     position: relative;
-    left: 40px;
-    width: 200px;
+    left: 10px;
 }
 #ingredients_search_input {
     position: relative;
@@ -291,7 +283,7 @@ input#device_search_input {
 input#ustensils_search_input {
     position: relative;
     top: -60px;
-    left: 50px;
+    left: 20px;
     display: none;
     width: 200px;
     background-color: #bb2d3b;
@@ -306,8 +298,8 @@ input#ustensils_search_input {
     padding-bottom: 1%;
 }
 
-select.multicolumnbox{
-    columns: 4 200px;
+.fa-angle-up.ingre {
+    cursor: pointer;
 }
 
 
