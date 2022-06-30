@@ -1,4 +1,7 @@
-const searchIngredients = async (value) => {
+import { filterAll } from "./fetchData.js";
+import {getContent} from "./fetchData.js";
+
+export const searchIngredients = async (value) => {
     const res = await fetch("recipes.json");
     const data = await res.json();
   
@@ -22,7 +25,7 @@ const searchIngredients = async (value) => {
     }
   };
   
-  const filterIngredient = async (searchBox) => {
+  export const filterIngredient = async (searchBox) => {
     document.getElementById("recipeList").innerHTML = "";
   
     const res = await fetch("recipes.json");
@@ -43,7 +46,7 @@ const searchIngredients = async (value) => {
     getContent(fits);
   };
   
-  const outputHtmlContent = (fits) => {
+  export const outputHtmlContent = (fits) => {
     if (fits.length > 0) {
       var html = `<div id="ingredientMain">`;
       html = fits
@@ -65,17 +68,16 @@ const searchIngredients = async (value) => {
     }
   };
   
-  function removeTag(index) {
+  export function removeTag(index) {
     ingredientsTags.splice(index, 1);
     outputHtmlContent(ingredientsTags);
     if (ingredientsTags.length == 0) {
       document.getElementById("ingredientsList").innerHTML = "";
     }
   }
-  
+
   ingredientsForm.addEventListener("submit", function (e) {
     e.preventDefault();
     searchIngredients(ingreinput.value);
     ingreinput.innerHTML = " ";
   });
-  
