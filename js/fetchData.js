@@ -134,34 +134,84 @@ function getContent(recipes) {
 const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
-  console.time();
+  console.time('binary')
+  var recipeValue = "";
+  // Output name from binary search
+
+  data.recipes = data.recipes.sort()
+  if (binarySearchNameDescription(searchBox, data.recipes) == -1) {
+    recipeValue = null;
+  } else {
+    recipeValue = data.recipes[binarySearchNameDescription(searchBox, data.recipes)];
+  }
+  console.timeEnd('binary')
   let fits = data.recipes.filter((recipe) => {
-    console.log("try");
-    const regex = new RegExp(`^${searchBox}`, "gi");
-    return (
-      recipe.name.match(regex) ||
-      recipe.description.match(regex) ||
-      recipe.ingredients[0].ingredient.match(regex) ||
-      recipe.ingredients[1].ingredient.match(regex) ||
-      (recipe.ingredients[2]
-        ? recipe.ingredients[2].ingredient.match(regex)
-        : null) ||
-      (recipe.ingredients[3]
-        ? recipe.ingredients[3].ingredient.match(regex)
-        : null) ||
-      (recipe.ingredients[4]
-        ? recipe.ingredients[4].ingredient.match(regex)
-        : null)
-    );
+    var ingredientValue = "";
+    if (binarySearchIngredient(searchBox, recipe.ingredients) == -1) {
+      ingredientValue = null;
+    } else {
+      ingredientValue =
+        recipe.ingredients[binarySearchIngredient(searchBox, recipe.ingredients)]
+          .ingredient;
+    }
+    return ingredientValue;
   });
 
   if (searchBox.length === 0) {
     fits = [];
     recipeList.innerHTML = "";
   }
+  console.log(fits);
+  if (recipeValue != null) {
+    fits.push(recipeValue);
+  }
   outputHtml(fits);
-  console.timeEnd()
 };
+
+const binarySearchIngredient = (val, arr) => {
+  const regex = new RegExp(`^${val}`, "gi");
+  let lower = 0;
+  let upper = arr.length - 1;
+
+  while (lower <= upper) {
+    // console.log("try");
+    const middle = lower + Math.floor((upper - lower) / 2);
+
+    if (arr[middle].ingredient.match(regex)) {
+      return middle;
+    }
+    if (val < arr[middle]) {
+      upper = middle - 1;
+    } else {
+      lower = middle + 1;
+    }
+  }
+
+  return -1;
+};
+
+const binarySearchNameDescription = (val, arr) => {
+  const regex = new RegExp(`^${val}`, "gi");
+
+  let lower = 0;
+  let upper = arr.length - 1;
+  console.time('binary')
+  while (lower <= upper) {
+    // console.log("try");
+    const middle = lower + Math.floor((upper - lower) / 2);
+    if (arr[middle].name.match(regex) || arr[middle].description.match(regex)) {
+      return middle;
+    }
+    if (val < arr[middle]) {
+      upper = middle - 1;
+    } else {
+      lower = middle + 1;
+    }
+  }
+  return -1;
+  console.timeEnd('binary')
+};
+
 
 const outputHtml = (fits) => {
   if (fits.length > 0) {
