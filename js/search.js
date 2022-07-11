@@ -1,3 +1,34 @@
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+
+
+
+const searchRecipe = async (searchBox) => {
+  const res = await fetch("recipes.json");
+  const data = await res.json();
+  console.time('binary')
+  var recipeValue = "";
+  // Output name from binary search
+
+  data.recipes = data.recipes.sort()
+  if (linearSearch(searchBox, data.recipes) == -1) {
+    recipeValue = null;
+  } else {
+    recipeValue = data.recipes[binarySearchNameDescription(searchBox, data.recipes)];
+  }
+  console.timeEnd('binary')
+  let fits = data.recipes.filter((recipe) => {
+    var ingredientValue = "";
+    if (linearSearch(searchBox, recipe.ingredients) == -1) {
+      ingredientValue = null;
+    } else {
+      ingredientValue =
+        recipe.ingredients[linearSearch(searchBox, recipe.ingredients)]
+          .ingredient;
+    }
+    return ingredientValue;
+  });
+
 const searchIngredients = async (value) => {
     const res = await fetch("recipes.json");
     const data = await res.json();
@@ -12,7 +43,7 @@ const searchIngredients = async (value) => {
     }
     ingredientsList = ingredientsList.sort();
   
-    if (binary(value, ingredientsList) != -1) {
+    if (linaerSearch(value, ingredientsList) != -1) {
       ingredientsTags.push(value);
       allTags.push(value);
       outputHtmlContent(ingredientsTags);
@@ -34,7 +65,7 @@ const searchIngredients = async (value) => {
       applianceList.push(recipes[i].appliance);
     }
     applianceList = applianceList.sort();
-    if (binary(value, applianceList) != -1) {
+    if (linearSearch(value, applianceList) != -1) {
       appliancesTags.push(value);
       allTags.push(value);
       outputDeviceHtmlContent(appliancesTags);
@@ -43,6 +74,17 @@ const searchIngredients = async (value) => {
       outputDeviceHtmlContent([]);
     }
   };
+  if (searchBox.length === 0) {
+    fits = [];
+    recipeList.innerHTML = "";
+  }
+  console.log(fits);
+  if (recipeValue != null) {
+    fits.push(recipeValue);
+  }
+  outputHtml(fits);
+};
+
   
 
   const searchUstensils = async (value) => {
@@ -57,7 +99,7 @@ const searchIngredients = async (value) => {
       }
     }
     ustensilssList = ustensilssList.sort();
-    if (binary(value, ustensilssList) != -1) {
+    if (linearSearch(value, ustensilssList) != -1) {
       ustensTags.push(value);
       allTags.push(value);
       outputUstenHtmlContent(ustensTags);
@@ -66,5 +108,3 @@ const searchIngredients = async (value) => {
       outputUstenHtmlContent([]);
     }
   };
-
-  //extrea comment
