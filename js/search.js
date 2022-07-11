@@ -1,3 +1,35 @@
+const searchRecipe = async (searchBox) => {
+  const res = await fetch("recipes.json");
+  const data = await res.json();
+  console.time();
+  let fits = data.recipes.filter((recipe) => {
+    console.log("try");
+    const regex = new RegExp(`^${searchBox}`, "gi");
+    return (
+      recipe.name.match(regex) ||
+      recipe.description.match(regex) ||
+      recipe.ingredients[0].ingredient.match(regex) ||
+      recipe.ingredients[1].ingredient.match(regex) ||
+      (recipe.ingredients[2]
+        ? recipe.ingredients[2].ingredient.match(regex)
+        : null) ||
+      (recipe.ingredients[3]
+        ? recipe.ingredients[3].ingredient.match(regex)
+        : null) ||
+      (recipe.ingredients[4]
+        ? recipe.ingredients[4].ingredient.match(regex)
+        : null)
+    );
+  });
+
+  if (searchBox.length === 0) {
+    fits = [];
+    recipeList.innerHTML = "";
+  }
+  outputHtml(fits);
+  console.timeEnd()
+};
+
 const searchIngredients = async (value) => {
     const res = await fetch("recipes.json");
     const data = await res.json();
