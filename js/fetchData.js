@@ -208,26 +208,6 @@ ustenForm.addEventListener("submit", function (e) {
   usteInput.innerHTML = " ";
 });
 
-const binary = (val, arr) => {
-  let lower = 0;
-  let upper = arr.length - 1;
-
-  while (lower <= upper) {
-    console.log("try");
-    const middle = lower + Math.floor((upper - lower) / 2);
-
-    if (val === arr[middle]) {
-      return middle;
-    }
-    if (val < arr[middle]) {
-      upper = middle - 1;
-    } else {
-      lower = middle + 1;
-    }
-  }
-  return -1;
-};
-// console.log(binary('Brown Sugar', 'searchedValue'))
 
 function removeDuplicates(arr) {
   return arr.filter((item, index) => arr.indexOf(item) === index);
