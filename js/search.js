@@ -1,5 +1,4 @@
-<<<<<<< main
-=======
+
 let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 function linearSearch(value, array) {
@@ -13,7 +12,7 @@ function linearSearch(value, array) {
 
 
 
->>>>>>> local
+
 const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
@@ -109,11 +108,11 @@ const searchIngredients = async (value) => {
     }
     ingredientsList = ingredientsList.sort();
   
-<<<<<<< main
+
     if (binary(value, ingredientsList) != -1) {
-=======
+
     if (linearSearch(value, ingredientsList) != -1) {
->>>>>>> local
+
       ingredientsTags.push(value);
       allTags.push(value);
       outputHtmlContent(ingredientsTags);
@@ -166,4 +165,5 @@ const searchIngredients = async (value) => {
     } else {
       outputUstenHtmlContent([]);
     }
-  };
+  }
+}

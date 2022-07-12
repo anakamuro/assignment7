@@ -350,11 +350,6 @@ const filterAll = async (searchBox) => {
       getContent([]);
     }
 
-    // **************************
+    
   }
 };
-<<<<<<< main
-=======
-
-
->>>>>>> local
