@@ -1,4 +1,11 @@
-let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+function linearSearch(value, array) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === value) {
+      return i;
+    }
+  }
+  return -1;
+}
 
 
 
@@ -14,7 +21,7 @@ const searchRecipe = async (searchBox) => {
   if (linearSearch(searchBox, data.recipes) == -1) {
     recipeValue = null;
   } else {
-    recipeValue = data.recipes[binarySearchNameDescription(searchBox, data.recipes)];
+    recipeValue = data.recipes[linearSearch(searchBox, data.recipes)];
   }
   console.timeEnd('binary')
   let fits = data.recipes.filter((recipe) => {
@@ -28,6 +35,7 @@ const searchRecipe = async (searchBox) => {
     }
     return ingredientValue;
   });
+}
 
 const searchIngredients = async (value) => {
     const res = await fetch("recipes.json");
@@ -43,7 +51,7 @@ const searchIngredients = async (value) => {
     }
     ingredientsList = ingredientsList.sort();
   
-    if (linaerSearch(value, ingredientsList) != -1) {
+    if (linearSearch(value, ingredientsList) != -1) {
       ingredientsTags.push(value);
       allTags.push(value);
       outputHtmlContent(ingredientsTags);
@@ -73,7 +81,7 @@ const searchIngredients = async (value) => {
     } else {
       outputDeviceHtmlContent([]);
     }
-  };
+  
   if (searchBox.length === 0) {
     fits = [];
     recipeList.innerHTML = "";
@@ -83,9 +91,9 @@ const searchIngredients = async (value) => {
     fits.push(recipeValue);
   }
   outputHtml(fits);
-};
 
-  
+
+};
 
   const searchUstensils = async (value) => {
     const res = await fetch("recipes.json");
