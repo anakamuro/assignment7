@@ -39,7 +39,6 @@ const binarySearchNameDescription = (val, arr) => {
     }
   }
   return -1;
-  console.timeEnd('binary')
 };
 
 const binary = (value, array) => {
@@ -117,7 +116,6 @@ const searchIngredients = async (value) => {
     ingredientsList = ingredientsList.sort();
   
 
-    if (binary(value, ingredientsList) != -1) {
 
     if (binary(value, ingredientsList) != -1) {
 
@@ -175,5 +173,4 @@ const searchIngredients = async (value) => {
       outputUstenHtmlContent([]);
     }
   }
-}
 
