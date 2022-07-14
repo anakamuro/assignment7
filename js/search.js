@@ -1,40 +1,3 @@
-const searchRecipe = async (searchBox) => {
-  const res = await fetch("recipes.json");
-  const data = await res.json();
-  console.time('binary')
-  var recipeValue = "";
-  // Output name from binary search
-
-  data.recipes = data.recipes.sort()
-  if (binarySearchNameDescription(searchBox, data.recipes) == -1) {
-    recipeValue = null;
-  } else {
-    recipeValue = data.recipes[binarySearchNameDescription(searchBox, data.recipes)];
-  }
-  console.timeEnd('binary')
-  let fits = data.recipes.filter((recipe) => {
-    var ingredientValue = "";
-    if (binarySearchIngredient(searchBox, recipe.ingredients) == -1) {
-      ingredientValue = null;
-    } else {
-      ingredientValue =
-        recipe.ingredients[binarySearchIngredient(searchBox, recipe.ingredients)]
-          .ingredient;
-    }
-    return ingredientValue;
-  });
-
-  if (searchBox.length === 0) {
-    fits = [];
-    recipeList.innerHTML = "";
-  }
-  console.log(fits);
-  if (recipeValue != null) {
-    fits.push(recipeValue);
-  }
-  outputHtml(fits);
-};
-
 const binarySearchIngredient = (val, arr) => {
   const regex = new RegExp(`^${val}`, "gi");
   let lower = 0;
@@ -76,8 +39,67 @@ const binarySearchNameDescription = (val, arr) => {
     }
   }
   return -1;
-  console.timeEnd('binary')
 };
+
+const binary = (value, array) => {
+  let lower = 0;
+  let upper = array.length - 1;
+
+  while (lower <= upper) {
+    console.log("try");
+    const middle = lower + Math.floor((upper - lower) / 2);
+
+    if (value === array[middle]) {
+      return middle;
+    }
+    if (value < array[middle]) {
+      upper = middle - 1;
+    } else {
+      lower = middle + 1;
+    }
+  }
+  return -1;
+};
+// console.log(binary('Brown Sugar', 'searchedValue'))
+
+
+const searchRecipe = async (searchBox) => {
+  const res = await fetch("recipes.json");
+  const data = await res.json();
+  console.time('binary')
+  var recipeValue = "";
+  // Output name from binary search
+
+  data.recipes = data.recipes.sort()
+  if (binarySearchNameDescription(searchBox, data.recipes) == -1) {
+    recipeValue = null;
+  } else {
+    recipeValue = data.recipes[binarySearchNameDescription(searchBox, data.recipes)];
+  }
+  console.timeEnd('binary')
+  let fits = data.recipes.filter((recipe) => {
+    var ingredientValue = "";
+    if (binarySearchIngredient(searchBox, recipe.ingredients) == -1) {
+      ingredientValue = null;
+    } else {
+      ingredientValue =
+        recipe.ingredients[binarySearchIngredient(searchBox, recipe.ingredients)]
+          .ingredient;
+    }
+    return ingredientValue;
+  });
+
+  if (searchBox.length === 0) {
+    fits = [];
+    recipeList.innerHTML = "";
+  }
+  console.log(fits);
+  if (recipeValue != null) {
+    fits.push(recipeValue);
+  }
+  outputHtml(fits);
+};
+
 
 const searchIngredients = async (value) => {
     const res = await fetch("recipes.json");
@@ -93,7 +115,10 @@ const searchIngredients = async (value) => {
     }
     ingredientsList = ingredientsList.sort();
   
+
+
     if (binary(value, ingredientsList) != -1) {
+
       ingredientsTags.push(value);
       allTags.push(value);
       outputHtmlContent(ingredientsTags);
@@ -113,6 +138,7 @@ const searchIngredients = async (value) => {
     recipes = data.recipes;
     for (var i = 0; i < recipes.length; i++) {
       applianceList.push(recipes[i].appliance);
+      
     }
     applianceList = applianceList.sort();
     if (binary(value, applianceList) != -1) {
@@ -146,4 +172,5 @@ const searchIngredients = async (value) => {
     } else {
       outputUstenHtmlContent([]);
     }
-  };
+  }
+
