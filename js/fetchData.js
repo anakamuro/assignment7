@@ -208,27 +208,6 @@ ustenForm.addEventListener("submit", function (e) {
   usteInput.innerHTML = " ";
 });
 
-const binary = (val, arr) => {
-  let lower = 0;
-  let upper = arr.length - 1;
-
-  while (lower <= upper) {
-    console.log("try");
-    const middle = lower + Math.floor((upper - lower) / 2);
-
-    if (val === arr[middle]) {
-      return middle;
-    }
-    if (val < arr[middle]) {
-      upper = middle - 1;
-    } else {
-      lower = middle + 1;
-    }
-  }
-  return -1;
-};
-// console.log(binary('Brown Sugar', 'searchedValue'))
-
 function removeDuplicates(arr) {
   return arr.filter((item, index) => arr.indexOf(item) === index);
 }
@@ -250,13 +229,6 @@ function selUstensils() {
   document.getElementById("ustensils_search_input").value =
     ustenDropdown.options[ustenDropdown.selectedIndex].text;
 }
-/*
- const obj = JSON.parse('./recipes.json');
- console.log(obj)
- */
-// ingredientsTags
-// appliancesTags
-// ustensTags
 
 const filterAll = async (searchBox) => {
   searchBox = allTags;
@@ -340,11 +312,4 @@ const filterAll = async (searchBox) => {
   }
 };
 
-function linearSearch(arr, elem) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === elem) {
-      return i;
-    }
-  }
-  return -1;
-}
+

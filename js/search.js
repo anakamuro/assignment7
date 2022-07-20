@@ -7,15 +7,11 @@ function linearSearch(value, array) {
   return -1;
 }
 
-
-
-
 const searchRecipe = async (searchBox) => {
   const res = await fetch("recipes.json");
   const data = await res.json();
   console.time('binary')
   var recipeValue = "";
-  // Output name from binary search
 
   data.recipes = data.recipes.sort()
   if (linearSearch(searchBox, data.recipes) == -1) {
