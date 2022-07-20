@@ -21,8 +21,8 @@
   
     <div class="container">
       <div class="topnav">
-        <img class="logo" src="logo.png"/>
-        <input id="search"class="validate" type="text" placeholder="Search an ingredient, device, utensil or a recipe">
+        <img class="logo" src="logo.png" alt="logo"/>
+        <input id="search" class="validate" type="text" placeholder="Search an ingredient, device, utensil or a recipe">
         <div id="recipeList"></div>
         <i class="fa fa-search" aria-hidden="true"></i>
 
@@ -32,21 +32,21 @@
        <div id="grid">
 
 
-        <Select placeholder="ingredients" type="button" id="ingredients_search_dropdown" onChange="searchIngredients(this.value);selIngredient()" class="btn btn-primary btn2"><i id="angle" class="fa fa-angle-down" aria-hidden="true"></i></Select>
+        <Select placeholder="ingredients" id="ingredients_search_dropdown" onChange="searchIngredients(this.value);selIngredient()" class="btn btn-primary btn2"><i class="fa fa-angle-down"id="angle" aria-hidden="true"></i></Select>
         
         <form id="ingredientsForm">
-        <input type="search" placeholder="Search an ingredient" id="ingredients_search_input" class="btn btn-primary btn2 multicolumnbox"><i onclick="drop_change()" class="fa fa-angle-up ingre"></i></input>
+        <input type="search" placeholder="Search an ingredient" id="ingredients_search_input" class="btn btn-primary btn2 multicolumnbox"><i class="fa fa-angle-up ingre"onclick="drop_change()" ></i></input>
         <div id="ingredientsList"></div>
       </form>
 
 
         <form id="deviceForm">
-        <Select placeholder="device" type="button" id="device_search_dropdown" onChange="searchDevice(this.value);selDevice()" class="device text-center btn2"><i class="fa fa-angle-down device" aria-hidden="true"></i></Select>
+        <Select placeholder="device" id="device_search_dropdown" onChange="searchDevice(this.value);selDevice()" class="device text-center btn2"><i class="fa fa-angle-down device" aria-hidden="true"></i></Select>
         <input type="search" placeholder="Search a device" id="device_search_input" class="btn btn-primary btn2"><i onclick="drop_change()" class="fa fa-angle-up device" ></i></input>
         <div id="applianceList"></div>
         </form>
         <form id="ustenForm">
-        <Select placeholder="ustensils" type="button" id="ustensils_search_dropdown" onChange="searchUstensils(this.value);selUstensils()" class="btn btn-danger btn2"><i class="fa fa-angle-down" aria-hidden="true"></i></Select>
+        <Select placeholder="ustensils" id="ustensils_search_dropdown" onChange="searchUstensils(this.value);selUstensils()" class="btn btn-danger btn2"><i class="fa fa-angle-down" aria-hidden="true"></i></Select>
         <input type="search" placeholder="Search an ustensils" id="ustensils_search_input" class="btn btn-primary btn2"><i onclick="drop_change()" class="fa fa-angle-up uste"></i></input>
         <div id="ustensilssList"></div>
         </form>
